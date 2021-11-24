@@ -40,18 +40,31 @@ int main( int argc, char *argv[] )
 	
 	//setup chars to find patterns
 	int n;
-	int scanpattern;
-	scanpattern = 0;
+	int line;
+	line = 1;
 	char cs[8] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
 	char cat[8] = {'c', 'a', 't', '\0', '\0', '\0', '\0', '\0'};
 	char tag[8] = {'t', 'a', 'g', '\0', '\0', '\0', '\0', '\0'};
 	char sub[8] = {'s', 'u', 'b', '\0', '\0', '\0', '\0', '\0'};
 	char map[8] = {'m', 'a', 'p', '\0', '\0', '\0', '\0', '\0'};
 	char start[8] = {'s', 't', 'a', 'r', 't', '\0', '\0', '\0'};
+	char pattern[511];
+
+	int p;
+	p = 0;
+	while( p != 512 )
+	{
+		pattern[p] = '\0';
+		p++;
+	}
 
 	//run through the entire file char by char or til we terminate
 	while( ch!=EOF && running == 1 )
 	{
+		if( ch == '\n' )
+		{
+			line++;
+		}
 		ch = fgetc(fp); //load next char
 		if( ch == '!' ) //check if we have a blush prefix
 		{
@@ -63,35 +76,77 @@ int main( int argc, char *argv[] )
 				n++;
 				ch = fgetc(fp);
 			}
-	
-			if( strcmp( cs, cat ) == 0 )
+			if ( ch == '\n' )
 			{
-				scanpattern = 1;
-			//	printf("pattern found: %s\n", cs);
+				//if this is true the rest is false so it goes back to the first while
+				printf("found !, but there's no data on line %d\n", line);
 			}
-			else if( strcmp( cs, sub ) == 0 )
+			if ( ch == ':' && n == 3 )
 			{
-				scanpattern = 1;
-			//	printf("pattern found: %s\n", cs);
-			}
-			else if( strcmp( cs, tag ) == 0 )
-			{
-				scanpattern = 1;
-			//	printf("pattern found: %s\n", cs);
-			}
-			else if( strcmp( cs, map ) == 0 )
-			{
-				scanpattern = 1;
-			//	printf("pattern found: %s\n", cs);
+				ch = fgetc(fp);
+				p = 0;
+				while( ch != ':' && p != 512 )
+				{
+					if( ch == ',' ) //check if patterns are separated and writes file if so
+					{
+						printf("adding %s ", argv[1]);
+						printf("to file %s", pattern);
+						printf(".%s\n", cs);
+						while( p != 0 )
+						{
+							pattern[p] = '\0';
+							p--;
+						}
+					}
+					else if( ch != '\n' )
+					{
+						pattern[p] = ch;
+						p++;
+					}
+					else if( ch == '\n' )
+					{
+						printf("missing : on line %d\n", line);
+					}
+					ch = fgetc(fp);
+				}
+				if( ch == ':' && p != 512 && p != 0 ) //check if it was just two ::
+				{
+					printf("adding %s ", argv[1]);
+					printf("to file %s", pattern);
+					printf(".%s\n", cs);
+					while( p != 0 )
+					{
+						pattern[p] = '\0';
+						p--;
+					}
+				}
+//				if( strcmp( cs, cat ) == 0 )
+//				{
+//					scanpattern = 1;
+//				}
+//				else if( strcmp( cs, sub ) == 0 )
+//				{
+//					scanpattern = 1;
+//				}
+//				else if( strcmp( cs, tag ) == 0 )
+//				{
+//					scanpattern = 1;
+//				}
+//				else if( strcmp( cs, map ) == 0 )
+//				{
+//					scanpattern = 1;
+//				}
 			}
 			else if( strcmp( cs, start ) == 0 )
 			{
-				printf("pattern found: %s\n", cs);
+				printf("pattern found: %s ", cs);
+				printf("on line %d\n", line);
 				running = 0;
 			}
 			else
 			{
-				printf("strange pattern: %s\n", cs );
+				printf("strange pattern: %s ", cs);
+				printf("on line %d\n", line);
 				//printf(" in file: %s", argv);
 			}
 			cs[0] = '\0';
