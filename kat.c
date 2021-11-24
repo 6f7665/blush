@@ -3,6 +3,47 @@
 #include <ctype.h>
 #include <string.h>
 
+void katwrite( char *file, char *thing, char *ext )
+{
+	int chaarpos;
+	int fnp;
+	chaarpos = 0;
+	fnp = 0;
+	char chaar;
+	char filename[255];
+	
+	chaar = file[chaarpos];
+	while( chaarpos != 254 )
+	{
+		chaarpos++;
+		if( chaar == '/' )
+		{
+			fnp = 0;
+		}
+		if( chaar != '.' && chaar != '/' )
+		{
+			filename[fnp] = chaar;
+			fnp++;
+		}
+		if( chaar == '.' )
+		{
+			chaarpos = 254;
+		}
+		chaar = file[chaarpos];
+	}
+
+	while( fnp != 254 )
+	{
+		filename[fnp] = '\0';
+		fnp++;
+	}
+
+//	printf("%s\n", filename);
+	printf("adding %s ", filename); //fix so that this actually writes a file
+	printf("to %s", thing);
+	printf(".%s\n", ext);
+}
+
 int main( int argc, char *argv[] )
 {
 	int running = 0;
@@ -14,13 +55,13 @@ int main( int argc, char *argv[] )
 	//abort if more than one argument
 	else if( argc > 2 )
 	{
-		printf("ERROR: Du har angivit för många filnamn.\n");
+		printf("ERROR: Too many filenames.\n");
 		return 1;
 	}
 	//abort if there is no argument
 	else
 	{
-		printf("ERROR: Du har inte angivit ett filnamn.\n");
+		printf("ERROR: Missing argument - No filename.\n");
 		return 1;
 	}
 
@@ -31,7 +72,7 @@ int main( int argc, char *argv[] )
 	//check if the file opened properly
 	if( fp==NULL )
 	{
-		printf("ERROR: Något gick fel när filen öppnades");
+		printf("ERROR: File couldn't be opened");
 		return 1;
 	}
 
@@ -52,7 +93,7 @@ int main( int argc, char *argv[] )
 
 	int p;
 	p = 0;
-	while( p != 512 )
+	while( p != 511 )
 	{
 		pattern[p] = '\0';
 		p++;
@@ -85,13 +126,11 @@ int main( int argc, char *argv[] )
 			{
 				ch = fgetc(fp);
 				p = 0;
-				while( ch != ':' && p != 512 )
+				while( ch != ':' && p != 511 )
 				{
-					if( ch == ',' ) //check if patterns are separated and writes file if so
+					if( ch == ',' ) //check if patterns are separated and write file if so
 					{
-						printf("adding %s ", argv[1]);
-						printf("to file %s", pattern);
-						printf(".%s\n", cs);
+						katwrite( argv[1], pattern, cs );
 						while( p != 0 )
 						{
 							pattern[p] = '\0';
@@ -109,33 +148,15 @@ int main( int argc, char *argv[] )
 					}
 					ch = fgetc(fp);
 				}
-				if( ch == ':' && p != 512 && p != 0 ) //check if it was just two ::
+				if( ch == ':' && p != 511 && p != 0 ) //check if it was just two ::
 				{
-					printf("adding %s ", argv[1]);
-					printf("to file %s", pattern);
-					printf(".%s\n", cs);
+					katwrite( argv[1], pattern, cs );
 					while( p != 0 )
 					{
 						pattern[p] = '\0';
 						p--;
 					}
 				}
-//				if( strcmp( cs, cat ) == 0 )
-//				{
-//					scanpattern = 1;
-//				}
-//				else if( strcmp( cs, sub ) == 0 )
-//				{
-//					scanpattern = 1;
-//				}
-//				else if( strcmp( cs, tag ) == 0 )
-//				{
-//					scanpattern = 1;
-//				}
-//				else if( strcmp( cs, map ) == 0 )
-//				{
-//					scanpattern = 1;
-//				}
 			}
 			else if( strcmp( cs, start ) == 0 )
 			{
@@ -165,3 +186,4 @@ int main( int argc, char *argv[] )
 
 	return 0;
 }
+
