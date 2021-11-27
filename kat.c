@@ -3,18 +3,17 @@
 #include <ctype.h>
 #include <string.h>
 
-void katwrite( char *file, char *thing, char *ext )
+void katwrite( char *file, char *kw_pattern )
 {
-	int chaarpos;
-	int fnp;
-	chaarpos = 0;
-	fnp = 0;
+	int chaarpos = 0;
+	int fnp = 0;
 	char chaar;
 	char filename[255];
 	
-	chaar = file[chaarpos];
+	//chaar = file[chaarpos];
 	while( chaarpos != 254 )
 	{
+		chaar = file[chaarpos];
 		chaarpos++;
 		if( chaar == '/' )
 		{
@@ -27,9 +26,9 @@ void katwrite( char *file, char *thing, char *ext )
 		}
 		if( chaar == '.' )
 		{
+			//filename[fnp] = chaar;
 			chaarpos = 254;
 		}
-		chaar = file[chaarpos];
 	}
 
 	while( fnp != 254 )
@@ -38,10 +37,14 @@ void katwrite( char *file, char *thing, char *ext )
 		fnp++;
 	}
 
-//	printf("%s\n", filename);
-	printf("adding %s ", filename); //fix so that this actually writes a file
-	printf("to %s", thing);
-	printf(".%s\n", ext);
+	FILE *kw_fp; //declare filepointer
+	kw_fp = fopen(kw_pattern, "a");
+
+	fputs(filename, kw_fp); //write the name of the file indexed in this program to pattern.extention
+	fclose(kw_fp);
+
+	printf("added %s ", filename); //print out what we did
+	printf("to %s\n", kw_pattern);
 }
 
 int main( int argc, char *argv[] )
@@ -83,6 +86,7 @@ int main( int argc, char *argv[] )
 	int n;
 	int line;
 	line = 1;
+	char dot[4] = {'.', '\0', '\0', '\0'};
 	char cs[8] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
 	char cat[8] = {'c', 'a', 't', '\0', '\0', '\0', '\0', '\0'};
 	char tag[8] = {'t', 'a', 'g', '\0', '\0', '\0', '\0', '\0'};
@@ -109,7 +113,7 @@ int main( int argc, char *argv[] )
 		ch = fgetc(fp); //load next char
 		if( ch == '!' ) //check if we have a blush prefix
 		{
-			ch = fgetc(fp); //ignore the ! char and read next char
+			ch = fgetc(fp); //read next char
 			n = 0;
 			while( ch != ':' && ch != '\n' && n != 7)
 			{
@@ -122,15 +126,19 @@ int main( int argc, char *argv[] )
 				//if this is true the rest is false so it goes back to the first while
 				printf("found !, but there's no data on line %d\n", line);
 			}
-			if ( ch == ':' && n == 3 )
+			if ( ch == ':' && n == 3 ) //check if it's a ":" after 3 characters
 			{
-				ch = fgetc(fp);
-				p = 0;
+				ch = fgetc(fp); //get the new char
+				p = 0; //setup loop
+
 				while( ch != ':' && p != 511 )
 				{
 					if( ch == ',' ) //check if patterns are separated and write file if so
 					{
-						katwrite( argv[1], pattern, cs );
+						strcat(pattern, dot);
+						strcat(pattern, cs);
+						p = (p + 4);
+						katwrite( argv[1], pattern );
 						while( p != 0 )
 						{
 							pattern[p] = '\0';
@@ -146,11 +154,15 @@ int main( int argc, char *argv[] )
 					{
 						printf("missing : on line %d\n", line);
 					}
-					ch = fgetc(fp);
+					ch = fgetc(fp); //get new char and return to start of loop
 				}
-				if( ch == ':' && p != 511 && p != 0 ) //check if it was just two ::
+
+				if( ch == ':' && p != 511 && p != 0 ) //check if it was just two ":"
 				{
-					katwrite( argv[1], pattern, cs );
+					strcat(pattern, dot);
+					strcat(pattern, cs);
+					p = (p + 4);
+					katwrite( argv[1], pattern );
 					while( p != 0 )
 					{
 						pattern[p] = '\0';
@@ -168,7 +180,8 @@ int main( int argc, char *argv[] )
 			{
 				printf("strange pattern: %s ", cs);
 				printf("on line %d\n", line);
-				//printf(" in file: %s", argv);
+
+				//count up till next line here
 			}
 			cs[0] = '\0';
 			cs[1] = '\0';
