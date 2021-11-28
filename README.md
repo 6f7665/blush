@@ -1,5 +1,5 @@
 # Blush
-Simple static htmls generator with tags and categories, compatible with BSD & GNU/Linux
+Simple static html generator with support for tags and categories, compatible with BSD & GNU/Linux
 
 # Todo
 Rewrite categorization in C  
