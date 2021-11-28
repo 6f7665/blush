@@ -50,8 +50,14 @@ void katwrite( char *file, char *kw_pattern )
 	FILE *kw_fp; //declare filepointer and open file in "gen/" for appending
 	kw_fp = fopen(kw_gen, "a");
 
+	if( kw_fp==NULL )
+	{
+		printf("ERROR: Tmp file couldn't be opened for writing\nAre you sure you have the gen/ directory?\n");
+	}
+
 	fputs(filename, kw_fp); //write the name of the file indexed in this program to pattern.extention
-	fputc("\n", kw_fp);
+	char kw_n = '\n';
+	fputc(kw_n, kw_fp);
 	fclose(kw_fp);
 
 	printf("added %s ", filename); //print out what we did
