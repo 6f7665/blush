@@ -2,12 +2,12 @@
 #cat materials/ascii
 
 #remove old files
-touch rm.blu
-rm *.blu
+rm gen/*.tag
+rm gen/*.cat
 #old files removed
 
 #initialize and setup categories for menu entries
-cats=$(grep -v "#" categories.dat | grep : | awk '{print $1}')
+cats=$(grep -v "#" settings/categories.dat | grep : | awk '{print $1}')
 cp materials/menu gen/menu.tmp
 for Line in $cats
 do
