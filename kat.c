@@ -26,7 +26,6 @@ void katwrite( char *file, char *kw_pattern )
 		}
 		if( chaar == '.' )
 		{
-			//filename[fnp] = chaar;
 			chaarpos = 254;
 		}
 	}
@@ -37,10 +36,22 @@ void katwrite( char *file, char *kw_pattern )
 		fnp++;
 	}
 
-	FILE *kw_fp; //declare filepointer
-	kw_fp = fopen(kw_pattern, "a");
+	char kw_gen[68];
+	kw_gen[0] = 'g';
+	kw_gen[1] = 'e';
+	kw_gen[2] = 'n';
+	kw_gen[3] = '/';
+	for (int num = 4; num != 68; num++)
+	{
+		kw_gen[num] = '\0';
+	}
+	strcat(kw_gen, kw_pattern);
+
+	FILE *kw_fp; //declare filepointer and open file in "gen/" for appending
+	kw_fp = fopen(kw_gen, "a");
 
 	fputs(filename, kw_fp); //write the name of the file indexed in this program to pattern.extention
+	fputc("\n", kw_fp);
 	fclose(kw_fp);
 
 	printf("added %s ", filename); //print out what we did
@@ -86,18 +97,18 @@ int main( int argc, char *argv[] )
 	int n;
 	int line;
 	line = 1;
-	char dot[4] = {'.', '\0', '\0', '\0'};
+	char dot[2] = {'.', '\0'};
 	char cs[8] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
 	char cat[8] = {'c', 'a', 't', '\0', '\0', '\0', '\0', '\0'};
 	char tag[8] = {'t', 'a', 'g', '\0', '\0', '\0', '\0', '\0'};
 	char sub[8] = {'s', 'u', 'b', '\0', '\0', '\0', '\0', '\0'};
 	char map[8] = {'m', 'a', 'p', '\0', '\0', '\0', '\0', '\0'};
 	char start[8] = {'s', 't', 'a', 'r', 't', '\0', '\0', '\0'};
-	char pattern[511];
+	char pattern[63];
 
 	int p;
 	p = 0;
-	while( p != 511 )
+	while( p != 63 )
 	{
 		pattern[p] = '\0';
 		p++;
@@ -131,7 +142,7 @@ int main( int argc, char *argv[] )
 				ch = fgetc(fp); //get the new char
 				p = 0; //setup loop
 
-				while( ch != ':' && p != 511 )
+				while( ch != ':' && p != 63 )
 				{
 					if( ch == ',' ) //check if patterns are separated and write file if so
 					{
@@ -157,7 +168,7 @@ int main( int argc, char *argv[] )
 					ch = fgetc(fp); //get new char and return to start of loop
 				}
 
-				if( ch == ':' && p != 511 && p != 0 ) //check if it was just two ":"
+				if( ch == ':' && p != 63 && p != 0 ) //check if it was just two ":"
 				{
 					strcat(pattern, dot);
 					strcat(pattern, cs);
