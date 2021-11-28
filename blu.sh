@@ -2,8 +2,7 @@
 #cat materials/ascii
 
 #remove old files
-rm gen/*.tag
-rm gen/*.cat
+rm gen/*
 #old files removed
 
 #initialize and setup categories for menu entries
@@ -21,9 +20,9 @@ echo "menu generated"
 #menu generated
 
 #starting to categorize html pages
-for file in txt/*.txt
+for file in txt/*.md
 do
-	./kat.sh $file &
+	./blu.kat $file
 	#faster than an oiled thunderbolt
 done
 wait
@@ -31,7 +30,7 @@ echo "subcategories and tags generated"
 #everything is now categorised, html generation can start
 
 #filter out rare tags
-for file in *tag.blu
+for file in gen/*.tag
 do
 	lines=$(wc -l $file | awk '{print $1}')
 	if [ ! $lines -gt "2" ]
@@ -42,26 +41,26 @@ done
 #rare tags filtered out
 
 #turn all tags into a big page
-cat menu.blu materials/bodyprefix > html/tags.html
-for file in *tag.blu
-do
-	filename=$(echo "${file##*/}" $file | awk -F"." '{printf $1}')
-	echo "<p><b>$filename</b><br>" >> html/tags.html
-	cat $file >> html/tags.html
-	echo "</p>" >> html/tags.html
-done
-cat materials/bodysuffix materials/footer >> html/tags.html
+#cat menu.blu materials/bodyprefix > html/tags.html
+#for file in gen/*.tag
+#do
+#	filename=$(echo "${file##*/}" $file | awk -F"." '{printf $1}')
+#	echo "<p><b>$filename</b><br>" >> html/tags.html
+#	cat $file >> html/tags.html
+#	echo "</p>" >> html/tags.html
+#done
+#cat materials/bodysuffix materials/footer >> html/tags.html
 #tagsheets generated, all pages can be linked using tags
 
 #adding link sheets and catting html pages
-for file in txt/*.txt #in progress
+for file in txt/*.md #in progress
 do
 	./aux.sh $file &
 	#runs everything in parallel because everyone loves speed
 done
 wait
 
-rm gen/* #removes tmp files but saves the menu we just generated
+rm gen/* #removes tmp files in gen/
 
 echo " "
 echo "finished!"
