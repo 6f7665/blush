@@ -4,11 +4,7 @@
 
 int main( int argc, char *argv[] )
 {
-	if( argc == 2 )
-	{
-		printf("Öppnar filen %s\n", argv[1]);
-	}
-	else if( argc > 2 )
+	if( argc > 2 )
 	{
 		printf("ERROR: Too many filenames.\n");
 		return 1;
@@ -31,11 +27,13 @@ int main( int argc, char *argv[] )
 	
 	ch = fgetc(fp);
 
-	//deklarerar saker för rubriker
-	int rubrik;
-	int rubrikn;
-	rubrik = 0;
-	rubrikn = 0;
+	//declare variables for headers
+	int header;
+	int headern;
+	header = 0;
+	headern = 0;
+
+	//declare variables for spaces // <br>
 	int spacen;
 	spacen = 0;
 
@@ -53,33 +51,32 @@ int main( int argc, char *argv[] )
 				printf("\n");
 				if( spacen >= 2 )
 				{
-					printf("<br>") // add <br> cuz it was two spaces
+					printf("<br>"); // add <br> cuz it was two spaces
 				}
 				spacen = 0;
 			}
 		}
-
 		while( ch == '#' ) //counting hashtags
 		{
-			rubrikn++;
+			headern++;
 			ch = fgetc(fp);
 		}
-		if( rubrikn != 0 ) //if the hashtags stop
+		if( headern != 0 ) //if the hashtags stop
 		{
 			int a;
 			if( ch == '\n' ) //it was just an empty line, print out hashtags and skip
 			{
-				for( a = 0; a != rubrikn; a++ ) //print out all the lost hashtags
+				for( a = 0; a != headern; a++ ) //print out all the lost hashtags
 				{
 					printf("#");
 				}
 				printf("\n");
-				rubrikn = 0;
+				headern = 0;
 			}
-			if( ch == ' ' ) //if there is a space after the hashtags, start a html header
+			if( ch == ' ' ) //if there is a space after the hashtags, start a <h[x]>
 			{
-				printf("<h%i>", rubrikn);
-				rubrik = 1;
+				printf("<h%i>", headern);
+				header = 1;
 				ch = fgetc(fp);
 				while ( ch != '\n')
 				{
@@ -89,19 +86,19 @@ int main( int argc, char *argv[] )
 			}
 			if ( ch == '\n' ) //close the header at end of line
 			{
-				printf("</h%i>\n", rubrikn);
-				rubrik = 0;
-				rubrikn = 0;
+				printf("</h%i>\n", headern);
+				header = 0;
+				headern = 0;
 			}
 			else //there is no header just a comment
 			{
-				for( a = 0; a != rubrikn; a++ ) //print out all the lost hashtags
+				for( a = 0; a != headern; a++ ) //print out all the lost hashtags
 				{
 					printf("#");
 				}
 				//printf("\n");
 				printf("%c", ch);
-				rubrikn = 0;
+				headern = 0;
 			}
 		}
 		else
