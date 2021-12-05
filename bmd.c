@@ -9,7 +9,7 @@ int main( int argc, char *argv[] )
 		printf("ERROR: Too many filenames.\n");
 		return 1;
 	}
-	else
+	else if( argc < 1 )
 	{
 		printf("ERROR: Missing argument - No filename.\n");
 		return 1;
@@ -27,6 +27,12 @@ int main( int argc, char *argv[] )
 	
 	ch = fgetc(fp);
 
+	//code blocks
+	int code;
+	int coden;
+	code = 0;
+	coden = 0;
+
 	//declare variables for headers
 	int header;
 	int headern;
@@ -39,6 +45,53 @@ int main( int argc, char *argv[] )
 
 	while( ch!=EOF )
 	{
+		//code blocks
+		if( ch == '`')
+		{
+			while( ch == '`' )
+			{
+				coden++;
+				ch = fgetc(fp);
+			}
+			printf("<code>");
+
+			int codeesc = 0;
+
+			while( coden != 0 )
+			{
+				if( ch == '\n' )
+				{
+					printf("<br>");
+					ch = fgetc(fp);
+				}
+				while( ch == '`' ) //close the code tag
+				{
+					codeesc++;
+					ch = fgetc(fp);
+					if( ch != '`' && coden == codeesc )
+					{
+						coden = 0;
+						codeesc = 0;
+					}
+					else if( ch != '`' ) //fails to close code tag, not enough tics in escape sequence
+					{
+						while( codeesc != 0 )
+						{
+							printf("`");
+							codeesc--;
+						}
+					}
+				}
+				if( ch != '`' )
+				{
+					printf("%c", ch);
+					ch = fgetc(fp);
+				}
+			}
+			printf("</code>");
+		}
+
+		//<br> with space+space+\n
 		while( ch == ' ' ) // counting spaces
 		{
 			spacen++;
@@ -56,7 +109,9 @@ int main( int argc, char *argv[] )
 				spacen = 0;
 			}
 		}
-		while( ch == '#' ) //counting hashtags
+
+		//headers using "#"
+		while( ch == '#' ) //count up hashtags to get the [x] for <h[x]>
 		{
 			headern++;
 			ch = fgetc(fp);
@@ -101,6 +156,7 @@ int main( int argc, char *argv[] )
 				headern = 0;
 			}
 		}
+
 		else
 		{
 			printf("%c", ch );
