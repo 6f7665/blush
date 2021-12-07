@@ -11,8 +11,12 @@ blush has categories:
 
 and tags:
 
-!imptag:documentation
+``` !imptag:documentation ```
 
 and you can even have a blog:
 
-!impblog:blog
+`!impblog:blog`
+
+``` code can be written withing ticks like this `code` ```
+
+
