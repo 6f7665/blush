@@ -27,11 +27,15 @@ int main( int argc, char *argv[] )
 	
 	ch = fgetc(fp);
 
+	//text formatting bools (0 = inactive, 1 = active )
+	int strong = 0;
+	int underline = 0;
+	int italics = 0;
+	int strikethrough = 0;
+	char prev_ch = '\0';
+
 	//code blocks
-	int code;
-	int coden;
-	code = 0;
-	coden = 0;
+	int codeblock = 0;
 
 	//declare variables for headers
 	int header;
@@ -45,19 +49,98 @@ int main( int argc, char *argv[] )
 
 	while( ch!=EOF )
 	{
-		//code blocks
+		//escape character prints out next character without formatting
+		if( ch == '\\' )
+		{
+			ch = fgetc(fp);
+			printf("%c", ch);
+			ch = fgetc(fp);
+		}
+
+		//text formatting
+		if( ch == '*' || ch == '_' || ch == '~' )
+		{
+			prev_ch = ch;
+			ch = fgetc(fp);
+
+			if( ch == prev_ch )
+			{
+				if( prev_ch == '*' ) //toggle "strong"
+				{
+					if( strong == 0 )
+					{
+						strong = 1;
+						printf("<strong>");
+					}
+					else
+					{
+						strong = 0;
+						printf("</strong>");
+					}
+				}
+				if( prev_ch == '_' ) //toggle underline
+				{
+					if( underline == 0 )
+					{
+						underline = 1;
+						printf("<u>"); //could be <ins> too
+					}
+					else
+					{
+						underline = 0;
+						printf("</u>");
+					}
+				}
+				if( prev_ch == '~' ) //toggle strikethrough
+				{
+					if( strikethrough == 0 )
+					{
+						strikethrough = 1;
+						printf("<del>");
+					}
+					else
+					{
+						strikethrough = 0;
+						printf("</del>");
+					}
+				}
+			}
+			else //ch wasn't equal to previous char
+			{
+				if( prev_ch == '*' || '_' ) //toggle italics <em>/<i>
+				{
+					if( italics == 0 )
+					{
+						italics = 1;
+						printf("<em>");
+					}
+					else
+					{
+						italics = 0;
+						printf("</em>");
+					}
+				}
+				//the char ch will loop back to the beginning of the while loop if it is _*~,
+			}
+
+		}
+
+		//code blocks, everything but ` are ignored once it begins
+		//``` has to be ended with ``` as a ` within two `` will be ignored too
+		//input: `` ` `` will give: <code> ` </code>
+		//input: `` ` ``` will give: <code> ` </code><code>
 		if( ch == '`')
 		{
 			while( ch == '`' )
 			{
-				coden++;
+				codeblock++;
 				ch = fgetc(fp);
 			}
 			printf("<code>");
 
 			int codeesc = 0;
 
-			while( coden != 0 )
+			while( codeblock != 0 )
 			{
 				if( ch == '\n' )
 				{
@@ -68,9 +151,9 @@ int main( int argc, char *argv[] )
 				{
 					codeesc++;
 					ch = fgetc(fp);
-					if( ch != '`' && coden == codeesc )
+					if( ch != '`' && codeblock == codeesc )
 					{
-						coden = 0;
+						codeblock = 0;
 						codeesc = 0;
 					}
 					else if( ch != '`' ) //fails to close code tag, not enough tics in escape sequence
