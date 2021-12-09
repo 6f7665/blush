@@ -23,21 +23,20 @@ echo "menu generated"
 for file in txt/*.md
 do
 	./blu.kat $file
-	#faster than an oiled thunderbolt
+	#generates links to all pages and writes them to .tag and .sub files in gen/
 done
-wait
 echo "subcategories and tags generated"
 #everything is now categorised, html generation can start
 
 #filter out rare tags
-for file in gen/*.tag
-do
-	lines=$(wc -l $file | awk '{print $1}')
-	if [ ! $lines -gt "2" ]
-	then
-		rm $file
-	fi
-done
+#for file in gen/*.tag
+#do
+#	lines=$(wc -l $file | awk '{print $1}')
+#	if [ ! $lines -gt "2" ]
+#	then
+#		rm $file
+#	fi
+#done
 #rare tags filtered out
 
 #turn all tags into a big page
@@ -53,14 +52,16 @@ done
 #tagsheets generated, all pages can be linked using tags
 
 #adding link sheets and catting html pages
-for file in txt/*.md #in progress
+for file in txt/*.md
 do
-	./aux.sh $file &
-	#runs everything in parallel because everyone loves speed
+	newfile=$( echo $file | awk -F"/" '{printf $2}')
+	#./aux.sh $file &
+	./blu.imp $file > gen/$newfile.temp
+	#generates temporary pages and puts them in gen/
 done
 wait
 
-rm gen/* #removes tmp files in gen/
+#rm gen/* #removes tmp files in gen/
 
 echo " "
 echo "finished!"
