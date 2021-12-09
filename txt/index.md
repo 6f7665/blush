@@ -7,16 +7,20 @@
 Blush is a tool to generate static html from markdown,
 blush has categories:
 
-!impsub:syntax
+` !impsub:syntax `
 
 and tags:
 
-``` !imptag:documentation ```
+` !imptag:documentation `
+
+!imptag:index
+
+!imptag:blog
 
 and you can even have a blog:
 
 `!impblog:blog`
 
-``` code can be written withing ticks like this `code` ```
+`` code can be written withing ticks like this `code` ``
 
 
