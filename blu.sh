@@ -6,17 +6,17 @@ rm gen/*
 #old files removed
 
 #initialize and setup categories for menu entries
-cats=$(grep -v "#" settings/categories.dat | grep : | awk '{print $1}')
-cp materials/menu gen/menu.tmp
-for Line in $cats
-do
-	itemname=$(grep "$Line" categories.dat | awk -F":" '{printf $3}')
-	#sed "s#MENUITEM#$Line#g" materials/mbracket | echo >> gen/menu.tmp #gives empty output, fix this l8r
-	sed "s#MENUITEM#$Line#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/item.tmp
-	cat gen/item.tmp >> gen/menu.tmp
-done
-cat gen/menu.tmp materials/closemenu > menu.blu
-echo "menu generated"
+#cats=$(grep -v "#" settings/categories.dat | grep : | awk '{print $1}')
+#cp materials/menu gen/menu.tmp
+#for Line in $cats
+#do
+#	itemname=$(grep "$Line" categories.dat | awk -F":" '{printf $3}')
+#	#sed "s#MENUITEM#$Line#g" materials/mbracket | echo >> gen/menu.tmp #gives empty output, fix this l8r
+#	sed "s#MENUITEM#$Line#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/item.tmp
+#	cat gen/item.tmp >> gen/menu.tmp
+#done
+#cat gen/menu.tmp materials/closemenu > menu.blu
+#echo "menu generated"
 #menu generated
 
 #starting to categorize html pages
