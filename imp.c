@@ -10,23 +10,17 @@ void import( char *imp_type, char *imp_pattern )
 	int isp = 0;
 	int isn = 0;
 
-//	printf("debug import started\n");
-
 	while( isn != 76 )
 	{
 		filename[isn] = '\0';
 		isn++;
 	}
 	
-//	printf("debug filename zeroed\n");
-
 	filename[0] = 'g';
 	filename[1] = 'e';
 	filename[2] = 'n';
 	filename[3] = '/';
 	
-//	printf("debug %s added to filename\n", filename);
-
 	isn = 4;
 	while( isn != 72 && imp_pattern[isp] != '\0' )
 	{
@@ -35,8 +29,6 @@ void import( char *imp_type, char *imp_pattern )
 		isn++;
 	}
 	
-//	printf("debug filename is: %s\n", filename);
-
 	isp = 0;
 	while( isn != 75 && imp_type[isp] != '\0' )
 	{
@@ -45,15 +37,8 @@ void import( char *imp_type, char *imp_pattern )
 		isn++;
 	}
 
-//	printf("debug filename and type: %s\n", filename);
-
-
 	FILE *isfp;
 	isfp = fopen(filename, "r");
-
-//	printf("%s was opened\n", filename);
-
-	//write to log here if file can't open properly
 
 	if( isfp != NULL ) //check if file could be opened
 	{
@@ -66,26 +51,21 @@ void import( char *imp_type, char *imp_pattern )
 			isch = fgetc(isfp);
 		}
 	}
-
-//	printf("\nfile printed\n");
 }	
 
 int main( int argc, char *argv[] )
 {
 	int running = 0;;
-	//check if it's one argument and open if so
-	if(argc == 2)
+	if(argc == 2) //check if it's one argument and open if so
 	{
 		running = 1;
 	}
-	//abort if more than one argument
-	else if( argc > 2 )
+	else if( argc > 2 ) //abort if more than one argument
 	{
 		printf("ERROR: Too many filenames.\n");
 		return 1;
 	}
-	//abort if there is no argument
-	else
+	else //abort if there is no argument
 	{
 		printf("ERROR: Missing argument - No filename.\n");
 		return 1;
@@ -95,8 +75,7 @@ int main( int argc, char *argv[] )
 	FILE *fp;
 	fp = fopen(argv[1], "r");
 
-	//check if the file opened properly
-	if( fp==NULL )
+	if( fp==NULL ) //check if the file opened properly
 	{
 		printf("ERROR: File couldn't be opened");
 		return 1;
@@ -113,6 +92,7 @@ int main( int argc, char *argv[] )
 	char sub[8] = {'i', 'm', 'p', 's', 'u', 'b', '\0', '\0'};
 	char blog[8] = {'i', 'm', 'p', 'b', 'l', 'o', 'g', '\0'};
 	char start[8] = {'s', 't', 'a', 'r', 't', '\0', '\0', '\0'};
+	char title[8] = {'t', 'i', 't', 'l', 'e', '\0', '\0', '\0'};
 	char pattern[63];
 	
 	char dottag[8] = {'.', 't', 'a', 'g', '\0', '\0', '\0', '\0'};
