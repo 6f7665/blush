@@ -54,8 +54,11 @@ void katwrite( char *file, char *kw_pattern )
 	{
 		printf("ERROR: Tmp file couldn't be opened for writing\nAre you sure you have the gen/ directory?\n");
 	}
-
+	fputs("<a href=\"", kw_fp);
 	fputs(filename, kw_fp); //write the name of the file indexed in this program to pattern.extention
+	fputs(".html\">", kw_fp);
+	fputs(filename, kw_fp); //write the name of the file indexed in this program to pattern.extention
+	fputs("</a><br>", kw_fp);
 	char kw_n = '\n';
 	fputc(kw_n, kw_fp);
 	fclose(kw_fp);
