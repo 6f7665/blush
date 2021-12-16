@@ -10,7 +10,7 @@ cats=$(grep -v "#" settings/categories.dat | grep : | awk '{print $1}')
 cp materials/menu gen/menu.tmp
 for Line in $cats
 do
-	itemname=$(grep $Line categories.dat | awk -F":" '{printf $3}')
+	itemname=$(grep "$Line" categories.dat | awk -F":" '{printf $3}')
 	#sed "s#MENUITEM#$Line#g" materials/mbracket | echo >> gen/menu.tmp #gives empty output, fix this l8r
 	sed "s#MENUITEM#$Line#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/item.tmp
 	cat gen/item.tmp >> gen/menu.tmp
@@ -22,7 +22,7 @@ echo "menu generated"
 #starting to categorize html pages
 for file in txt/*.md
 do
-	./blu.kat $file
+	./blu.kat "$file"
 	#generates links to all pages and writes them to .tag and .sub files in gen/
 done
 echo "subcategories and tags generated"
@@ -54,9 +54,9 @@ echo "subcategories and tags generated"
 #adding link sheets and catting html pages
 for file in txt/*.md
 do
-	newfile=$( echo $file | awk -F"/" '{printf $2}')
+	newfile=$( echo "$file" | awk -F"/" '{printf $2}')
 	#./aux.sh $file &
-	./blu.imp $file > gen/$newfile.temp
+	./blu.imp "$file" > gen/"$newfile".temp
 	#generates temporary pages and puts them in gen/
 done
 wait
