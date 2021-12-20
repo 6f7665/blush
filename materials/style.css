@@ -1,0 +1,359 @@
+:root {
+	--background-color: rgb(20, 20, 20);
+	--page-color: rgb(230, 230, 230);
+	--foreground-color: rgb(0, 0, 0);
+	--link-color: rgb(255, 0, 0);
+	--visited-color: rgb(155, 0, 0);
+	--active-color: rgb(255, 255, 255);
+	--aux1-color: rgb(100, 0, 0);
+	--aux2-color: rgb(70, 70, 70);
+	--aux3-color: rgb(255, 255, 255);
+}
+
+body {
+	background-image: url(images/headerbackground.jpg);
+	background-color: var(--background-color);
+	background-position: left top;
+	background-repeat: repeat-x;
+	font-size: 18px;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+#menucontainer {
+	position: fixed;
+	width: 15%;
+	top: 0;
+}
+
+#bodycontainer {
+	position: relative;
+	width: 60%;
+	max-width: 1366px;
+	/*min-width: 730px;*/
+	float: left;
+	margin-left: 15%;
+	margin-right: 0px;
+	margin-top: 60px;
+	margin-bottom: 60px;
+	padding: 0px;
+	background-color: var(--page-color);
+}
+
+#sidecontainer {
+	/*display: none;*/
+	position: fixed;
+        background-image: url(images/lystan.png);
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: 0px bottom;
+	width: 23%;
+	right: 0;
+	height: 90%;
+	bottom: 0;
+	color: white;
+}
+
+.fot {
+	position: fixed;
+	bottom: 10px;
+}
+
+.faktatext {
+	width: 94%;
+	margin: 3%;
+	padding: 0px;
+}
+
+.text {
+	width: 94%;
+	margin: 3%;
+	padding: 0px;
+}
+
+p {
+	margin: 0px;
+	padding: 0px;
+}
+
+.map {
+        column-count: 1;
+        width: 94%;
+	margin: 3%;
+      /*float: left;*/
+        padding: 0px;
+      /*background-color: #e0e0e0;*/
+        color: var(--foreground-color);
+}
+
+.map p {
+        font-size: 14px;
+        text-align: center;
+        padding-top: 3px;
+        padding-bottom: 3px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
+#header {
+        top: 0;
+	float: right;
+	width: 100%;
+	max-width: 200px;
+        background-image: url(images/logo.png);
+	background-size: 100% auto;
+        background-position: right top;
+        background-repeat: no-repeat;
+        margin-left: 0px;
+	margin-right: 10px;
+        padding-left: 0px; /* sätter menyn till höger om bilden */
+        padding-top: 100px; /* så inte menyn ligger mot toppen av sidan */
+}
+
+.ml {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+        /*background-color: rgba(0, 0, 222, 255);*/
+}
+
+.mi {
+        /*float: left;*/
+}
+
+/* menulänk */
+li a {
+        display: block;
+        color: var(--aux3-color);
+	width: 100%;
+        text-align: left;
+        padding: 12px 10px;
+        text-decoration: none;
+}
+
+/* aktiv menulänk */
+.active {
+        color: var(--foreground-color);
+	background-color: var(--page-color);
+}
+
+/* menulänk under mus */
+li a:hover:not(.active){
+        color: var(--link-color);
+}
+
+
+p ul {
+        list-style-type: circle;
+        margin: 5px;
+        padding: 5px;
+}
+
+p li {
+        float: left;
+}
+
+/* not visited */
+p a:link {
+  color: var(--link-color);
+}
+
+/* visited */
+p a:visited {
+  color: var(--visited-color);
+}
+
+/* mouse over */
+p a:hover {
+  color: var(--aux1-color);
+}
+
+.pic
+{
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 19%;
+        width: 60%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+.smallpic
+{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-left: 39%;
+        width: 20%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+.picr
+{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-left: 16px;
+	float: right;
+        width: 40%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+.smallpicr
+{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-left: 16px;
+	float: right;
+        width: 20%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+.picl
+{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-right: 16px;
+	float: left;
+        width: 40%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+.smallpicl
+{
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-right: 16px;
+	float: left;
+        width: 20%;
+        max-width: 900px;
+        height: auto;
+        border-style: solid;
+        border-color: var(--aux2-color);
+}
+
+@media screen and (max-width: 1366px) {
+
+	#menucontainer {
+		position: fixed;
+		width: 90%;
+		margin-left: 5%;
+		height: 100px;
+		top: 0;
+	}
+	#header {
+	        top: 0;
+		float: left;
+		width: 100%;
+		max-width: 800px;
+	        background-image: url(images/logo.png);
+		background-size: 200px 100px;
+	        background-position: left top;
+	        background-repeat: no-repeat;
+	        margin-left: 0px;
+	        padding-left: 200px; /* sätter menyn till höger om bilden */
+	        padding-top: 45px; /* så inte menyn ligger mot toppen av sidan */
+	}
+	.ml {
+	        list-style-type: none;
+	        margin: 10px;
+	        padding: 10px;
+		width: 100%;
+	        overflow: hidden;
+	        /*background-color: rgba(0, 0, 222, 255);*/
+	}
+	.mi {
+	        float: left;
+	}
+	li a {
+		display: inline-block;
+		color: var(--aux3-color);
+		width: 100%;
+	        text-align: left;
+	        padding: 10px 10px;
+	        text-decoration: none;
+	}
+
+	#bodycontainer {
+		position: relative;
+		width: 63%;
+		min-width: none;
+		max-width: none;
+		/*min-width: 730px;*/
+		float: left;
+		margin-left: 5%;
+		margin-right: 0px;
+		margin-top: 100px;
+		margin-bottom: 200px;
+		padding: 0px;
+		background-color: var(--page-color);
+	}
+
+	#sidecontainer {
+		width: 30%;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	#bodycontainer {
+		position: relative;
+		width: 90%;
+		min-width: none;
+		max-width: none;
+		/*min-width: 730px;*/
+		float: left;
+		margin-left: 5%;
+		margin-right: 5%;
+		margin-top: 100px;
+		margin-bottom: 200px;
+		padding: 0px;
+		background-color: var(--page-color);
+	}
+
+	#sidecontainer {
+		display: none;	
+	}
+	
+}
+
+@media screen and (max-width: 640px) {
+	#menucontainer {
+		position: fixed;
+		width: 100%;
+		margin-left: 0px;
+		height: 100px;
+		top: 0;
+	}
+	#bodycontainer {
+		position: relative;
+		width: 100%;
+		min-width: none;
+		max-width: none;
+		/*min-width: 730px;*/
+		float: left;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-top: 100px;
+		margin-bottom: 200px;
+		padding: 0px;
+		background-color: var(--page-color);
+	}
+
+	#sidecontainer {
+		display: none;	
+	}
+	
+}
