@@ -1,27 +1,14 @@
 !cat:index:
-!sub::
-!tag:blog,index,documentation:
 !title:Index:
+!tag:blog,index,documentation:
 !start:
 <p>
 # Blush
-Blush is a tool to generate static html from markdown,
-blush has categories:
-
-` !impsub:syntax `
-
-and tags:
-
-` !imptag:documentation `
-
-!imptag:index
-
-!imptag:blog
-
-and you can even have a blog:
-
-`!impblog:blog`
-
-`` code can be written withing ticks like this `code` ``
-
+Blush is a tool to generate static html pages and linking them together.  
+Blush supports categories, that will be will be added to menu and subcategories/tags that can be linked using `!impsub` and `!imptag`.  
+  
+## Documentation
+!impsub:documentation 
 </p>
+
+
