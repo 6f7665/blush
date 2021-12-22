@@ -10,19 +10,19 @@ void import( char *imp_type, char *imp_pattern )
 	int isp = 0;
 	int isn = 0;
 
-	while( isn != 76 )
+	while( isn != 76 ) //zero out filename
 	{
 		filename[isn] = '\0';
 		isn++;
 	}
-	
-	filename[0] = 'g';
+
+	filename[0] = 'g'; //fill in first characters in filename
 	filename[1] = 'e';
 	filename[2] = 'n';
 	filename[3] = '/';
 	
 	isn = 4;
-	while( isn != 72 && imp_pattern[isp] != '\0' )
+	while( isn != 72 && imp_pattern[isp] != '\0' ) //add the import pattern to filename
 	{
 		filename[isn] = imp_pattern[isp];
 		isp++;
@@ -30,7 +30,7 @@ void import( char *imp_type, char *imp_pattern )
 	}
 	
 	isp = 0;
-	while( isn != 75 && imp_type[isp] != '\0' )
+	while( isn != 75 && imp_type[isp] != '\0' ) //add extention/type to filename
 	{
 		filename[isn] = imp_type[isp];
 		isp++;
@@ -38,14 +38,14 @@ void import( char *imp_type, char *imp_pattern )
 	}
 
 	FILE *isfp;
-	isfp = fopen(filename, "r");
+	isfp = fopen(filename, "r"); //open file with filename for reading
 
 	if( isfp != NULL ) //check if file could be opened
 	{
 		char isch;
 		isch = fgetc(isfp);
 
-		while( isch != EOF ) //print file char by char
+		while( isch != EOF ) //print links from file char by char
 		{
 			printf("%c", isch );
 			isch = fgetc(isfp);
