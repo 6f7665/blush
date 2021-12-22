@@ -1,5 +1,5 @@
 # Blush
-BSD/Linux "u" Static HTML
+BSD/Linux "U" Static HTML
 
 Simple static html generator with support for tags and categories, compatible with BSD & GNU/Linux
 
