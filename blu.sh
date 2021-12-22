@@ -20,7 +20,7 @@ for file in gen/*.cat
 do
 	echo $file
 	page=$( echo $file | sed "s#gen/##g" | sed "s#.cat##g" )
-	itemname=$(cat txt/"$page".md | grep "title" | awk -F":" '{printf $2}' )
+	itemname=$( grep -m 1 '!title:' txt/"$page".md | awk -F":" '{printf $2}' )
 	sed "s#MENUITEM#$page#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/menuitem.temp
 	cat gen/menuitem.temp >> gen/menu.temp
 done
