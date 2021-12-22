@@ -1,3 +1,3 @@
+make
 
-
-gcc kat.c > kat
+mkdir gen
