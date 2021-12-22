@@ -140,13 +140,8 @@ int main( int argc, char *argv[] )
 
 			int codeesc = 0;
 
-			while( codeblock != 0 )
+			while( codeblock != 0 && ch != EOF)
 			{
-				if( ch == '\n' )
-				{
-					printf("<br>");
-					ch = fgetc(fp);
-				}
 				while( ch == '`' ) //close the code tag
 				{
 					codeesc++;
@@ -164,6 +159,21 @@ int main( int argc, char *argv[] )
 							codeesc--;
 						}
 					}
+				}
+				if( ch == '\n' )
+				{
+					printf("<br>");
+					ch = fgetc(fp);
+				}
+				else if( ch == '<' )
+				{
+					printf("&#60");
+					ch = fgetc(fp);
+				}
+				else if( ch == '>' )
+				{
+					printf("&#62");
+					ch = fgetc(fp);
 				}
 				if( ch != '`' )
 				{
