@@ -18,8 +18,9 @@ echo "subcategories and tags generated"
 cp materials/menu gen/menu.temp
 for file in gen/*.cat
 do
-	page=$( echo $file | awk -F"/" '{printf $2}' | awk -F"." '{printf $1}' )
-	itemname=$(cat txt/"$page".md | grep "!title:" | awk -F":" '{printf $2}')
+	echo $file
+	page=$( echo $file | sed "s#gen/##g" | sed "s#.cat##g" )
+	itemname=$(cat txt/"$page".md | grep "title" | awk -F":" '{printf $2}' )
 	sed "s#MENUITEM#$page#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/menuitem.temp
 	cat gen/menuitem.temp >> gen/menu.temp
 done
