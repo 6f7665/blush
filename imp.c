@@ -51,6 +51,7 @@ void import( char *imp_type, char *imp_pattern )
 			isch = fgetc(isfp);
 		}
 	}
+	//put error in else here if file couldn't be opened
 }	
 
 int main( int argc, char *argv[] )

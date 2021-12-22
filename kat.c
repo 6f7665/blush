@@ -63,8 +63,8 @@ void katwrite( char *file, char *kw_pattern )
 	fputc(kw_n, kw_fp);
 	fclose(kw_fp);
 
-	printf("added %s ", filename); //print out what we did
-	printf("to %s\n", kw_pattern);
+//	printf("added %s ", filename); //print out what we did
+//	printf("to %s\n", kw_pattern);
 }
 
 int main( int argc, char *argv[] )
@@ -113,6 +113,7 @@ int main( int argc, char *argv[] )
 	char sub[8] = {'s', 'u', 'b', '\0', '\0', '\0', '\0', '\0'};
 	char map[8] = {'m', 'a', 'p', '\0', '\0', '\0', '\0', '\0'};
 	char start[8] = {'s', 't', 'a', 'r', 't', '\0', '\0', '\0'};
+	char title[8] = {'t', 'i', 't', 'l', 'e', '\0', '\0', '\0'};
 	char pattern[63];
 
 	int p;
@@ -190,10 +191,10 @@ int main( int argc, char *argv[] )
 					}
 				}
 			}
-			else if( strcmp( cs, start ) == 0 )
+			else if( strcmp( cs, start ) == 0 || strcmp( cs, title ) == 0 )
 			{
-				printf("pattern found: %s ", cs);
-				printf("on line %d\n", line);
+			//	printf("pattern found: %s ", cs);
+			//	printf("on line %d\n", line);
 				running = 0;
 			}
 			else

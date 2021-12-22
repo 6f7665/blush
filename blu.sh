@@ -1,5 +1,5 @@
 #!/bin/sh
-#cat materials/ascii
+cat materials/ascii
 
 #remove old files
 rm gen/*
@@ -14,14 +14,18 @@ done
 echo "subcategories and tags generated"
 #everything is now categorised, html generation can start
 
-categories=$(find gen/*.cat | awk -F"/" '{printf $2}' | awk -F"." '{printf $1}')
-for Line in $categories
+#generate menu
+cp materials/menu gen/menu.temp
+for file in gen/*.cat
 do
-	itemname=$(cat txt/"$categories".md | grep "!title:" | awk -F":" '{print $1}')
-	sed "s#MENUITEM#$Line#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/menuitem.tmp
-	cat gen/menuitem.tmp >> gen/menu.tmp
+	page=$( echo $file | awk -F"/" '{printf $2}' | awk -F"." '{printf $1}' )
+	itemname=$(cat txt/"$page".md | grep "!title:" | awk -F":" '{printf $2}')
+	sed "s#MENUITEM#$page#" materials/mbracket | sed "s#ITEMNAME#$itemname#" > gen/menuitem.temp
+	cat gen/menuitem.temp >> gen/menu.temp
 done
+cat materials/closemenu >> gen/menu.temp
 echo "menu created"
+#menu generated
 
 #filter out rare tags
 #for file in gen/*.tag
@@ -44,10 +48,13 @@ do
 
 	#post processing for markdown and moving files from gen/ to html/
 	filename=$( echo "$newfile" | awk -F"." '{printf $1}')
-	./blu.bmd gen/"$newfile".temp > html/$filename.html
+	#./blu.bmd gen/"$newfile".temp > html/$filename.html
+	taglist=$(cat gen/"$newfile".temp | grep "!tag:" | awk -F":" '{printf $1}')
+	sed "s/TAGS/$taglist/g" materials/head > html/$filename.html
+	cat gen/menu.temp materials/bodyprefix gen/"$newfile".temp materials/bodysuffix materials/footer >> html/"$filename".html
 	#write html files to html directory
+	echo "$filename generated"
 done
-wait
 
 echo " "
 echo "finished!"
