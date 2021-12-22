@@ -1,8 +1,9 @@
 !cat:syntax:
-!sub::
+!title:Syntax:
+!sub:documentation:
 !tag:syntax,documentation:
-!map::
 !start:
+<p>
 # Blush
 Blush has it's own syntax, every command starts with ! at the start of the line and ends with : followed by the argument.
 The first part is for tagging and categorization. Once the start command is given the indexing will stop.
@@ -32,4 +33,4 @@ double space at the end of line creates a &#60;br&#62; tag.
 ` __bold__ `, makes bold appear as __bold__  
 ` ~~strike~~ `, makes strike appear as ~~strike~~  
 ` __*bold italic*__ `, makes text  __*bold and italic*__  
-
+</p>

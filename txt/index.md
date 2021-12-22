@@ -1,8 +1,9 @@
 !cat:index:
 !sub::
 !tag:blog,index,documentation:
-!map::
+!title:Index:
 !start:
+<p>
 # Blush
 Blush is a tool to generate static html from markdown,
 blush has categories:
@@ -23,4 +24,4 @@ and you can even have a blog:
 
 `` code can be written withing ticks like this `code` ``
 
-
+</p>

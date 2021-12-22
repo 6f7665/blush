@@ -1,0 +1,6 @@
+!genimp:head
+!import:gen/menu
+!import:materials/bodyprefix
+!page:
+!import:materials/bodysuffix
+!import:materials/footer
