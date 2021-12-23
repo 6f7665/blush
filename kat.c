@@ -63,8 +63,8 @@ void katwrite( char *file, char *kw_pattern )
 	fputc(kw_n, kw_fp);
 	fclose(kw_fp);
 
-	printf("added %s ", filename); //print out what we did
-	printf("to %s\n", kw_pattern);
+//	printf("added %s ", filename); //print out what we did
+//	printf("to %s\n", kw_pattern);
 }
 
 int main( int argc, char *argv[] )
@@ -144,7 +144,7 @@ int main( int argc, char *argv[] )
 
 			}
 
-			printf("%s", cs);
+		//	printf("%s", cs);
 			
 			if ( ch == '\n' )
 			{
@@ -203,12 +203,14 @@ int main( int argc, char *argv[] )
 			}
 			else if( strcmp( cs, title ) == 0 )
 			{
-				printf("%s found", cs);
+		//		printf("%s found", cs);
 			}
 			else
 			{
 				printf("strange pattern: %s ", cs);
-				printf("on line %d\n", line);
+				printf("on line %d ", line);
+				printf("in file %s\n", argv[1]);
+
 
 				//count up till next line here
 			}
