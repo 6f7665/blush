@@ -30,9 +30,9 @@ int main( int argc, char *argv[] )
 	//text formatting bools (0 = inactive, 1 = active )
 	int strong = 0;
 	int underline = 0;
-	int italics = 0;
+	int italic = 0;
 	int strikethrough = 0;
-	char prev_ch = '\0';
+	char prev_ch;
 
 	//code blocks
 	int codeblock = 0;
@@ -47,6 +47,8 @@ int main( int argc, char *argv[] )
 	int spacen;
 	spacen = 0;
 
+	italic = 0;
+
 	while( ch!=EOF )
 	{
 		//escape character prints out next character without formatting
@@ -58,78 +60,71 @@ int main( int argc, char *argv[] )
 		}
 
 		//text formatting
-		if( ch == '*' || ch == '_' || ch == '~' )
+		while( ( ch == '*' || ch == '_' || ch == '~' ) && ch != EOF )
 		{
-			prev_ch = ch;
+			//prevoius char definitions
+			//int strong = 0;
+			//int underline = 0;
+			//int italic = 0;
+			//int strikethrough = 0;
+			//char prev_ch;
+			//
+			//tags
+			//<em> = italic
+			//<u> = underline
+			//<del> = strikethrough
+			//<strong> = bold
+		
+			int formattingchars;
+			char new_ch;
+			fpos_t position;
+
+			fgetpos(fp, &position); //save the position
+			new_ch = fgetc(fp); // read one character ahead
+			fsetpos(fp, &position); //return to previous position
+			
+			if( new_ch == ch ) //check amout of formatting chars (if the next char is the same as current)
+			{
+				formattingchars = 2;
+			}	
+			if( new_ch != ch )
+			{
+				formattingchars = 1;
+			}
+		
+			//put or clear formatting based on char amount
+			if( formattingchars == 2 )
+			{
+				//clear formatting
+				if( ch == '*' && strong == 1 ){ printf("</strong>"); strong = 0; }
+				else if( ch == '_' && underline == 1 ){ printf("</u>"); underline = 0; }
+				else if( ch == '~' && strikethrough == 1 ){ printf("</del>"); strikethrough = 0; }
+	
+				//put formatting
+				else if( ch == '*' && strong == 0 ){ printf("<strong>"); strong = 1; }
+				else if( ch == '_' && underline == 0 ){ printf("<u>"); underline = 1; }
+				else if( ch == '~' && strikethrough == 0 ){ printf("<del>"); strikethrough = 1; }
+
+				ch = fgetc(fp);
+			}
+			if( formattingchars == 1 )
+			{
+				if( ch == '*' && italic == 1 ){ printf("</em>"); italic = 0; }
+				else if( ch == '_' && italic == 1 ){ printf("</em>"); italic = 0; }
+
+				else if( ch == '*' && italic == 0 ){ printf("<em>"); italic = 1; }
+				else if( ch == '_' && italic == 0 ){ printf("<em>"); italic = 1; }
+			}
 			ch = fgetc(fp);
-
-			if( ch == prev_ch )
-			{
-				if( prev_ch == '*' ) //toggle "strong"
-				{
-					if( strong == 0 )
-					{
-						strong = 1;
-						printf("<strong>");
-					}
-					else
-					{
-						strong = 0;
-						printf("</strong>");
-					}
-				}
-				if( prev_ch == '_' ) //toggle underline
-				{
-					if( underline == 0 )
-					{
-						underline = 1;
-						printf("<u>"); //could be <ins> too
-					}
-					else
-					{
-						underline = 0;
-						printf("</u>");
-					}
-				}
-				if( prev_ch == '~' ) //toggle strikethrough
-				{
-					if( strikethrough == 0 )
-					{
-						strikethrough = 1;
-						printf("<del>");
-					}
-					else
-					{
-						strikethrough = 0;
-						printf("</del>");
-					}
-				}
-			}
-			else //ch wasn't equal to previous char
-			{
-				if( prev_ch == '*' || '_' ) //toggle italics <em>/<i>
-				{
-					if( italics == 0 )
-					{
-						italics = 1;
-						printf("<em>");
-					}
-					else
-					{
-						italics = 0;
-						printf("</em>");
-					}
-				}
-				//the char ch will loop back to the beginning of the while loop if it is _*~,
-			}
-
 		}
 
 		//code blocks, everything but ` are ignored once it begins
 		//``` has to be ended with ``` as a ` within two `` will be ignored too
 		//input: `` ` `` will give: <code> ` </code>
 		//input: `` ` ``` will give: <code> ` </code><code>
-		if( ch == '`')
+		
+		//escape character prints out next character without formatting
+		if( ch == '`' && prev_ch != '\\')
 		{
 			while( ch == '`' )
 			{
@@ -185,22 +180,31 @@ int main( int argc, char *argv[] )
 		}
 
 		//<br> with space+space+\n
-		while( ch == ' ' ) // counting spaces
+		if( ch == ' ' ) // counting spaces
 		{
-			spacen++;
-			printf(" ");
+			int spacechars = 1;
+			char new_ch;
+			fpos_t position;
 
-			ch = fgetc(fp);
+			fgetpos(fp, &position); //save the position
+			new_ch = fgetc(fp); //go ahead anc read next char
 
-			if( ch == '\n' ) // if it's new row we add a <br>
+			while( new_ch == ' ' ) //count spaces in a row
 			{
+				spacechars++;
+				new_ch = fgetc(fp);
+			}	
+			if( new_ch == '\n' && spacechars >= 2 ) //if its new line after 2 or more spaces print <br>\n and dont go back to prev position
+			{
+				printf("<br>");
 				printf("\n");
-				if( spacen >= 2 )
-				{
-					printf("<br>"); // add <br> cuz it was two spaces
-				}
-				spacen = 0;
 			}
+			else //if there is no newline after spaces print out space and go back to previous position
+			{
+				fsetpos(fp, &position);
+				printf(" ");
+			}
+
 		}
 
 		//headers using "#"
@@ -250,14 +254,14 @@ int main( int argc, char *argv[] )
 			}
 		}
 
-		else
+		else if( ch != ' ' )
 		{
 			printf("%c", ch );
 		}
+		prev_ch = ch;
 		ch = fgetc(fp); //next char
 	}
 	
-	//printf("Det finns inget mer i %s\n", argv[1]);
 	fclose(fp);
 
 	return 0;
