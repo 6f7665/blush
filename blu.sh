@@ -42,22 +42,24 @@ printf '\033[34m>menu generated\033[39m\n'
 #adding link sheets and catting html pages
 for file in txt/*.md
 do
-	newfile=$( echo "$file" | awk -F"/" '{printf $2}')
-	#./aux.sh $file &
-	./blu.imp "$file" > gen/"$newfile".temp
-	#generates temporary pages and puts them in gen/
-
-	#post processing for markdown and moving files from gen/ to html/
-	filename=$( echo "$newfile" | awk -F"." '{printf $1}')
-	taglist=$(cat gen/"$newfile".temp | grep "!tag:" | awk -F":" '{printf $1}')
-	sed "s/TAGS/$taglist/g" materials/head > html/$filename.html
-	cat gen/menu.temp materials/bodyprefix >> html/$filename.html
-	./blu.bmd gen/"$newfile".temp >> html/$filename.html #this processes pages WITH md
-	#cat gen/"$newfile".temp >> html/$filename.html	#this ignores md
-	cat materials/bodysuffix materials/footer >> html/"$filename".html
-	#write html files to html directory
-	echo "$filename generated"
+	./imp.sh $file &
+	##	newfile=$( echo "$file" | awk -F"/" '{printf $2}')
+	##	#./aux.sh $file &
+	##	./blu.imp "$file" > gen/"$newfile".temp
+	##	#generates temporary pages and puts them in gen/
+	##	
+	##	#post processing for markdown and moving files from gen/ to html/
+	##	filename=$( echo "$newfile" | awk -F"." '{printf $1}')
+	##	taglist=$(cat gen/"$newfile".temp | grep "!tag:" | awk -F":" '{printf $1}')
+	##	sed "s/TAGS/$taglist/g" materials/head > html/$filename.html
+	##	cat gen/menu.temp materials/bodyprefix >> html/$filename.html
+	##	./blu.bmd gen/"$newfile".temp >> html/$filename.html #this processes pages WITH md
+	##	#cat gen/"$newfile".temp >> html/$filename.html	#this ignores md
+	##	cat materials/bodysuffix materials/footer >> html/"$filename".html
+	##	#write html files to html directory
+	##	echo "$filename generated"
 done
+wait
 
 echo " "
 echo "finished!"
