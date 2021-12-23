@@ -61,5 +61,4 @@ do
 done
 wait
 
-echo " "
-echo "finished!"
+printf '\033[34m>finished!\033[39m\n'
