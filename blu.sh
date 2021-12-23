@@ -11,7 +11,7 @@ do
 	./blu.kat "$file"
 	#generates links to all pages and writes them to .tag and .sub files in gen/
 done
-echo "subcategories and tags generated"
+printf '\033[34m>categories & tags generated\033[39m\n'
 #everything is now categorised, html generation can start
 
 #generate menu
@@ -25,7 +25,7 @@ do
 	cat gen/menuitem.temp >> gen/menu.temp
 done
 cat materials/closemenu >> gen/menu.temp
-echo "menu created"
+printf '\033[34m>menu generated\033[39m\n'
 #menu generated
 
 #filter out rare tags
