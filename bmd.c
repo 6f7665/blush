@@ -51,6 +51,39 @@ int main( int argc, char *argv[] )
 
 	while( ch!=EOF )
 	{
+		if( ch == '<' ) //ignore existing html tags
+		{
+			int link = 0;
+			printf("%c", ch);
+			ch = fgetc(fp);
+			if( ch == 'a')
+			{
+				link = 1;
+			}
+			while( ch != '>' && ch != EOF )
+			{
+				printf("%c", ch);
+				ch = fgetc(fp);
+			}
+			while( link != 0 )
+			{
+				int lsn = 0;
+				char linkstring[5] = {'<', '/', 'a', '>', '\0'};
+				printf("%c", ch);
+				ch = fgetc(fp);
+				while( ch == linkstring[lsn] )
+				{
+					lsn++;
+					printf("%c", ch);
+					ch = fgetc(fp);
+					if( lsn == 4 )
+					{
+						link = 0;
+						break;
+					}
+				}
+			}
+		}
 		//escape character prints out next character without formatting
 		if( ch == '\\' )
 		{
