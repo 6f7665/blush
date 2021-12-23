@@ -1,6 +1,6 @@
 !cat:syntax:
 !title:Syntax:
-!sub:documentation:
+!sub:docs:
 !tag:syntax,documentation:
 !start:
 <p>
@@ -30,7 +30,8 @@ double space at the end of line creates a &#60;br&#62; tag.
 ` # ` , header, number of consecutive hashtags increases header level  
 `` ` `` , begins codeblock, if multiple \` are used the code will have to be exited with that amount  
 ` *italic* ` , makes italic appear as *italic*  
-` __bold__ ` , makes bold appear as __bold__  
+` **bold** ` , makes bold appear as **bold**  
+` __underline__ ` , makes bold appear as __underlined__  
 ` ~~strike~~ ` , makes strike appear as ~~strike~~  
-` __*bold italic*__ ` , makes text  __*bold and italic*__  
+` _**bold italic**_ ` , makes text  _**bold and italic**_  
 </p>
