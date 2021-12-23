@@ -7,48 +7,48 @@ void import( char *imp_type, char *imp_pattern )
 {
 	char filename[76];
 
-	int isp = 0;
-	int isn = 0;
+	int isp = 0; //import string position
+	int ifp = 0; //import filename position
 
-	while( isn != 76 ) //zero out filename
+	while( ifp != 76 )
 	{
-		filename[isn] = '\0';
-		isn++;
+		filename[ifp] = '\0'; //clears out filename after declaration
+		ifp++;
 	}
-
-	filename[0] = 'g'; //fill in first characters in filename
+	
+	filename[0] = 'g'; //adds gen dir to filename
 	filename[1] = 'e';
 	filename[2] = 'n';
 	filename[3] = '/';
 	
-	isn = 4;
-	while( isn != 72 && imp_pattern[isp] != '\0' ) //add the import pattern to filename
+	ifp = 4;
+	while( ifp != 72 && imp_pattern[isp] != '\0' ) //add pattern to filename, eg. documentation
 	{
-		filename[isn] = imp_pattern[isp];
+		filename[ifp] = imp_pattern[isp];
 		isp++;
-		isn++;
+		ifp++;
 	}
 	
 	isp = 0;
-	while( isn != 75 && imp_type[isp] != '\0' ) //add extention/type to filename
+	while( ifp != 75 && imp_type[isp] != '\0' ) //add the type to filename, eg. .sub
 	{
-		filename[isn] = imp_type[isp];
+		filename[ifp] = imp_type[isp];
 		isp++;
-		isn++;
+		ifp++;
 	}
 
-	FILE *isfp;
-	isfp = fopen(filename, "r"); //open file with filename for reading
+	FILE *impfp; //import file pointer
+	impfp = fopen(filename, "r");
 
-	if( isfp != NULL ) //check if file could be opened
+	if( impfp != NULL ) //check if file could be opened
 	{
-		char isch;
-		isch = fgetc(isfp);
+		char impch; //import char
+		impch = fgetc(impfp);
 
-		while( isch != EOF ) //print links from file char by char
+		while( impch != EOF ) //print file char by char
 		{
-			printf("%c", isch );
-			isch = fgetc(isfp);
+			printf("%c", impch );
+			impch = fgetc(impfp);
 		}
 	}
 	//put error in else here if file couldn't be opened
