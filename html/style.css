@@ -2,12 +2,13 @@
 	--background-color: rgb(20, 20, 20);
 	--page-color: rgb(230, 230, 230);
 	--foreground-color: rgb(0, 0, 0);
-	--link-color: rgb(255, 0, 0);
-	--visited-color: rgb(155, 0, 0);
+	--link-color: rgb(30, 30, 255);
+	--visited-color: rgb(20, 20, 155);
 	--active-color: rgb(255, 255, 255);
-	--aux1-color: rgb(100, 0, 0);
-	--aux2-color: rgb(70, 70, 70);
-	--aux3-color: rgb(255, 255, 255);
+	--aux1-color: rgb(0, 0, 100);
+	--aux2-color: rgb(255, 255, 255);
+	--aux3-color: rgb(200, 200, 255);
+	--border-color: rgb(120, 120, 120);
 }
 
 body {
@@ -21,7 +22,7 @@ body {
 
 #menucontainer {
 	position: fixed;
-	width: 15%;
+	width: 16%;
 	top: 0;
 }
 
@@ -35,7 +36,7 @@ body {
 	margin-right: 0px;
 	margin-top: 60px;
 	margin-bottom: 60px;
-	padding: 0px;
+	padding: 3%;
 	background-color: var(--page-color);
 }
 
@@ -46,7 +47,7 @@ body {
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: 0px bottom;
-	width: 23%;
+	width: 16%;
 	right: 0;
 	height: 90%;
 	bottom: 0;
@@ -58,21 +59,16 @@ body {
 	bottom: 10px;
 }
 
-.faktatext {
-	width: 94%;
-	margin: 3%;
-	padding: 0px;
-}
-
-.text {
-	width: 94%;
-	margin: 3%;
-	padding: 0px;
-}
-
 p {
 	margin: 0px;
 	padding: 0px;
+}
+
+code {
+	background-color: var(--aux3-color);
+	border: 1px;
+	border-color: var(--border-color);
+	border-style: dashed;
 }
 
 .map {
@@ -125,7 +121,7 @@ p {
 /* menulänk */
 li a {
         display: block;
-        color: var(--aux3-color);
+        color: var(--aux2-color);
 	width: 100%;
         text-align: left;
         padding: 12px 10px;
@@ -190,7 +186,7 @@ p a:hover {
         max-width: 900px;
         height: auto;
         border-style: solid;
-        border-color: var(--aux2-color);
+        border-color: var(--border-color);
 }
 
 .picr
@@ -203,7 +199,7 @@ p a:hover {
         max-width: 900px;
         height: auto;
         border-style: solid;
-        border-color: var(--aux2-color);
+        border-color: var(--border-color);
 }
 
 .smallpicr
@@ -216,7 +212,7 @@ p a:hover {
         max-width: 900px;
         height: auto;
         border-style: solid;
-        border-color: var(--aux2-color);
+        border-color: var(--border-color);
 }
 
 .picl
@@ -229,7 +225,7 @@ p a:hover {
         max-width: 900px;
         height: auto;
         border-style: solid;
-        border-color: var(--aux2-color);
+        border-color: var(--border-color);
 }
 
 .smallpicl
@@ -242,7 +238,7 @@ p a:hover {
         max-width: 900px;
         height: auto;
         border-style: solid;
-        border-color: var(--aux2-color);
+        border-color: var(--border-color);
 }
 
 @media screen and (max-width: 1366px) {
@@ -298,7 +294,7 @@ p a:hover {
 		margin-right: 0px;
 		margin-top: 100px;
 		margin-bottom: 200px;
-		padding: 0px;
+		padding: 3%;
 		background-color: var(--page-color);
 	}
 
@@ -319,7 +315,7 @@ p a:hover {
 		margin-right: 5%;
 		margin-top: 100px;
 		margin-bottom: 200px;
-		padding: 0px;
+		padding: 3%;
 		background-color: var(--page-color);
 	}
 
@@ -348,7 +344,7 @@ p a:hover {
 		margin-right: 0px;
 		margin-top: 100px;
 		margin-bottom: 200px;
-		padding: 0px;
+		padding: 3%;
 		background-color: var(--page-color);
 	}
 
