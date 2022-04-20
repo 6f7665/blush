@@ -5,10 +5,10 @@ class Webpage
 {
 	public:
 
-		char title[512];
-		char category[512];
+		char Title[512];
+		char Category[512];
 		char SubCategory[512];
-		char tags[512];
+		char Tags[512];
 		char Filename[1024];
 		char Destination[1024];
 
@@ -26,11 +26,10 @@ int main( int argc, char *argv[] )
 	//-3 = single + index
 
 
-	int NumOfPages = 1; //check contents of folder from arguments herer
+	int NumOfPages = 1; //check contents of folder from arguments here
 
 	Webpage* WebpageObj = new Webpage[NumOfPages];
 	
-	//insert filename template
 	int running = 1;
 
 	while (running == 1)
