@@ -1,49 +1,151 @@
-#include <cstdio>
-#include <startflags.h>
+#include <string>
+#include <iostream>
+#include <filesystem>
+#include <fstream>
 
-class Webpage
+using namespace std; //kokplattan finns på riktigt!!!
+namespace fs = std::__fs::filesystem;
+
+int main(int argc, char** argv)
 {
-	public:
-
-		char Title[512];
-		char Category[512];
-		char SubCategory[512];
-		char Tags[512];
-		char Filename[1024];
-		char Destination[1024];
-
-		void ScanPage( char *Filename);
-		void AddToIndex( char *Destination );
-		void ConvertPage( char *Filename, char *Destination );
-}
-
-int main( int argc, char *argv[] )
-{
-	int Mode = Getstartflags( argc, argv );
-	//-1 = folder
-	//-2 = single
-	//-4 = noindex
-	//-3 = single + index
-
-
-	int NumOfPages = 1; //check contents of folder from arguments here
-
-	Webpage* WebpageObj = new Webpage[NumOfPages];
-	
-	int running = 1;
-
-	while (running == 1)
+	if( argc == 1 )
 	{
-		for (int CurrentPage = 1; CurrentPage != NumOfPages; CurrentPage++; )
+		cout << "ERROR: missing argument\n";
+		return 1;
+	}
+
+	class Webpage
+	{
+		public:
+	
+			string Title;
+			string Category;
+			string SubCategory;
+			string Tags;
+			string Filename;
+			string Destination;
+			
+//			void TellDestination(){ cout << Destination; };
+//			void ScanPage( char &Filename );
+//			void AddToIndex( char &Destination );
+//			void ConvertPage( char &Filename, char &Destination );
+	};
+
+	//runtime settings
+	string destinationfolder = "";
+	string foldername;
+	string flagF = "-f";
+	string singlename;
+	string flagS = "-s";
+	int foldermode = 0;
+	int singlemode = 0;
+
+//-------------	Get arguments from commandline
+
+	int a;
+
+	for( a = 1; a != argc; a++ )
+	{
+		if (flagF.compare(argv[a]) == 0)
 		{
-			WebpageObj[CurrentPage] = new Webpage
-			WebpageObj[CurrentPage].ScanPage();
-			WebpageObj[CurrentPage].AddToIndex();
+			foldermode = 1;
+			a++;
+			cout << "DEBUG: flagF: " << a << "/" << argc << argv[a] << "\n";
+			foldername.assign(argv[a]);
 		}
-		for (int CurrentPage = 1; CurrentPage != NumOfPages; CurrentPage++; )
+		else if (flagS.compare(argv[a]) == 0)
 		{
-			WebpageObj[CurrentPage].ConvertPage();
-			//add destruction of object here
+			singlemode = 1;
+			a++;
+			cout << "DEBUG: flagS: " << a << "/" << argc << argv[a] << "\n";
+			singlename.assign(argv[a]);
+		}
+		else
+		{
+			cout << "ERROR: uknown arg " << a << " / " << argc << argv[a] << "\n";
+			return 1;
 		}
 	}
+	if((singlemode == 1) && (foldermode == 1))
+	{
+		cout << "ERROR, can't run single and folder at the same time\n";
+		return 1;
+	}
+
+
+//-------------	Check amount of pages to process
+
+	int numofpages = 0;
+	if(singlemode == 1)
+	{
+		numofpages = 1;
+	}
+	else if(foldermode == 1)
+	{
+		//for (auto const& dir_entry : std::__fs::filesystem::directory_iterator{foldername})
+    		//{
+		//	numofpages++;
+		//	std::cout << dir_entry << '\n';
+		//}
+		//for (const auto & entry : std::__fs::filesystem::directory_iterator(foldername)) cout << entry;
+
+		//std::cout << "\nrecursive_directory_iterator:\n";
+		//for (auto const& dir_entry : __fs::filesystem::recursive_directory_iterator{foldername}) 
+		//{
+		//	std::cout << dir_entry << '\n';
+		//}
+		
+		//for (const fs::directory_entry& dir_entry :
+		//fs::recursive_directory_iterator("txt"))
+		//{
+		//	std::cout << dir_entry << '\n';
+		//}
+
+		std::string path = "txt";
+		path.assign(foldername);
+		for (const auto & entry : fs::directory_iterator(path))
+		std::cout << entry.path() << std::endl;
+	}
+
+	cout << numofpages;
+	return 0;
+
+//-------------	Iterate over all pages to process and process them
+
+	for( int x = 0; x != numofpages; x++ )
+	{
+
+	//-------------	Check extention of file
+
+	string destinationfilename;
+	destinationfilename.assign(singlename);
+
+		if (singlename.compare(singlename.size()-3,3,".md") == 0)
+		{
+			destinationfilename.erase (destinationfilename.end()-3, destinationfilename.end());
+			destinationfilename.append(".html");
+		}
+		if (singlename.compare(singlename.size()-4,4,".txt") == 0)
+		{
+			destinationfilename.erase (destinationfilename.end()-4, destinationfilename.end());
+			destinationfilename.append(".html");
+		}
+		if (singlename.compare(singlename.size()-5,5,".html") == 0)
+		{
+			destinationfilename.append(".html");
+		}
+
+	//-------------	Create page object, assign variables and call functions
+
+		Webpage Page[x];
+		Page[x].Filename.assign(singlename);
+		Page[x].Destination.assign(destinationfolder);
+		Page[x].Destination.append(destinationfilename);
+
+		cout << "DEBUG: filedest: " << Page[x].Destination << "\n";
+
+		return 0; //done
+	}
+
+	return 0;
 }
