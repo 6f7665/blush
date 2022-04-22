@@ -4,7 +4,7 @@
 #include <fstream>
 
 using namespace std; //kokplattan finns på riktigt!!!
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 int main(int argc, char** argv)
 {
@@ -75,6 +75,7 @@ int main(int argc, char** argv)
 
 //-------------	Check amount of pages to process
 
+	string pagepath[4096];
 	int numofpages = 0;
 	if(singlemode == 1)
 	{
@@ -82,32 +83,17 @@ int main(int argc, char** argv)
 	}
 	else if(foldermode == 1)
 	{
-		//for (auto const& dir_entry : std::__fs::filesystem::directory_iterator{foldername})
-    		//{
-		//	numofpages++;
-		//	std::cout << dir_entry << '\n';
-		//}
-		//for (const auto & entry : std::__fs::filesystem::directory_iterator(foldername)) cout << entry;
-
-		//std::cout << "\nrecursive_directory_iterator:\n";
-		//for (auto const& dir_entry : __fs::filesystem::recursive_directory_iterator{foldername}) 
-		//{
-		//	std::cout << dir_entry << '\n';
-		//}
-		
-		//for (const fs::directory_entry& dir_entry :
-		//fs::recursive_directory_iterator("txt"))
-		//{
-		//	std::cout << dir_entry << '\n';
-		//}
-
 		std::string path = "txt";
 		path.assign(foldername);
-		for (const auto & entry : fs::directory_iterator(path))
-		std::cout << entry.path() << std::endl;
+		for (const auto & entry : fs::directory_iterator(path)){
+		//std::cout << entry.path() << std::endl;
+		numofpages++;
+		pagepath[numofpages].assign(entry.path());
+		}
 	}
 
 	cout << numofpages;
+	cout << pagepath[numofpages];
 	return 0;
 
 //-------------	Iterate over all pages to process and process them
@@ -125,12 +111,12 @@ int main(int argc, char** argv)
 			destinationfilename.erase (destinationfilename.end()-3, destinationfilename.end());
 			destinationfilename.append(".html");
 		}
-		if (singlename.compare(singlename.size()-4,4,".txt") == 0)
+		else if (singlename.compare(singlename.size()-4,4,".txt") == 0)
 		{
 			destinationfilename.erase (destinationfilename.end()-4, destinationfilename.end());
 			destinationfilename.append(".html");
 		}
-		if (singlename.compare(singlename.size()-5,5,".html") == 0)
+		else if (singlename.compare(singlename.size()-5,5,".html") == 0)
 		{
 			destinationfilename.append(".html");
 		}
