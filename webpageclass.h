@@ -5,7 +5,8 @@ using namespace std;
 class Webpage
 {
 	public:
-	
+
+	int num;
 	string Filename;
 	string Title;
 	string Category;

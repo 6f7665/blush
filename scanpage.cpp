@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 #include "webpageclass.h"
 
@@ -16,6 +17,8 @@ int Webpage::ScanPage(string &Filename, string &Title, string &Category, string 
 		cout << "ERROR: File: " << Filename << "couldn't be opened\n";
 		return 1;
 	}
+
+	cout << "DEBUG: Reading file: " << Filename << "\n";
 
 	string line;
 	string typeofdef;

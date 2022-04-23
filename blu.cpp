@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 //self coded functions and classes
 #include "scanpage.h"
@@ -28,6 +29,7 @@ int main(int argc, char** argv)
 	string flagS = "-s";
 	int foldermode = 0;
 	int singlemode = 0;
+	int indexmode = 1;
 
 	//initialize string array for pages to process
 	string pagepath[32767];
@@ -79,45 +81,71 @@ int main(int argc, char** argv)
 		for (const auto & entry : fs::directory_iterator(path))
 		{
 			std::cout << entry.path() << std::endl;
-			numofpages++;
 			pagepath[numofpages].assign(entry.path());
 //			pagepath[numofpages].erase(0,1);
 //			pagepath[numofpages].resize( pagepath[numofpages].size()-1 );
+			numofpages++;
 		}
 	}
 
 	cout << "The number of pages are: " << numofpages << "\n";
 	
-	int x;
+//-------------	Iterate over all pages to scan and process them
 
-//	for( x = numofpages; x != 0; --x )
-//	{
-//		cout << pagepath[x];
-//	}
+	vector<Webpage*> pv;
 
-//-------------	Iterate over all pages to process and process them
-
-	int interrupt = 0;
-	
-	x = numofpages;
-	while( x != 0 )
+	for( int x = 0; x < numofpages; x++)
 	{
+		cout << "pagepath" << x << ": " << pagepath[x] << "\n";
 
-	//-------------	Create page object, assign variables and call functions
+		//pv.push_back(PageObj);
 
-		Webpage Page[x];
-		Page[x].Filename.assign(pagepath[x]);
+		Webpage *PageObj = new Webpage;
+		PageObj->num = x;
+		PageObj->Filename = pagepath[x];
+		pv.push_back(PageObj);
+	}
+
+	for( int x = 0; x < pv.size(); x++ )
+	{
+		if( indexing == 1 )
+		{
+
+	//------------- Scan the page with references so it can return the data into the object
+
+			pv[x]->ScanPage(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags);
+
+	//------------- Create files from scanned data
+
+	//		pv[x]->BuildData(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags);
+
+		}
+
+//		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
+
+//		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
+	}
+
+
+//	x = numofpages;
+//	while( x != 0 )
+//	{
+//	
+//	//-------------	Create page object, assign variables and call functions
+//	
+//		Webpage Page[x];
+//		Page[x].Filename.assign(pagepath[x]);
 //		Page[x].Destination.assign(destinationfolder);
 //		Page[x].Destination.append(Page[x].Filename);
-
+//	
 //		cout << "DEBUG: filedest: " << Page[x].Destination << "\n";
-
-		if(Page[x].ScanPage(Page[x].Filename, Page[x].Title, Page[x].Category, Page[x].SubCategory, Page[x].Tags) != 0) { interrupt = 1; }
-		//if()
-		cout << "DEBUG: title: " << Page[x].Title << "\n";
-		//if((interrupt = 0) && ())
-		
-		--x;
-	}
+//	
+//		if(Page[x].ScanPage(Page[x].Filename, Page[x].Title, Page[x].Category, Page[x].SubCategory, Page[x].Tags) != 0) { interrupt = 1; }
+//		//if()
+//		cout << "DEBUG: title: " << Page[x].Title << "\n";
+//		//if((interrupt = 0) && ())
+//		
+//		--x;
+//	}
 	return 0;
 }
