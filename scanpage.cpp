@@ -32,8 +32,11 @@ int Webpage::ScanPage(string &Filename, string &Title, string &Category, string 
 		if ((exclaim!=string::npos) && (colon!=string::npos))
 		{
 			lastcolon--;
+
+			//assign (string, start pos, lenght)
+
 			typeofdef.assign(line,exclaim+1,colon-1);
-			definition.assign(line,colon+1,lastcolon-1);
+			definition.assign(line,colon+1,(lastcolon - colon));
 		//debug	cout << line << "\n";
 		//debug	cout << typeofdef << "\n";
 

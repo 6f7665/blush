@@ -6,12 +6,11 @@
 
 //self coded functions and classes
 #include "scanpage.h"
+#include "builddata.h"
 #include "webpageclass.h"
 
 using namespace std; //kokplattan finns på riktigt!!!
 namespace fs = std::filesystem;
-
-//int ScanPage(string &Filename, string &Title, string &Category, string &SubCategory, string &Tags);
 
 int main(int argc, char** argv)
 {
@@ -24,12 +23,14 @@ int main(int argc, char** argv)
 
 	//runtime settings
 	string destinationfolder = "html/";
-	string foldername;
+	string foldername = "";
 	string flagF = "-f";
 	string flagS = "-s";
+//	string flagI = "-i";
+//	string flagN = "-n";
 	int foldermode = 0;
 	int singlemode = 0;
-	int indexmode = 1;
+//	int indexmode = 1; //index by default
 
 	//initialize string array for pages to process
 	string pagepath[32767];
@@ -82,13 +83,11 @@ int main(int argc, char** argv)
 		{
 			std::cout << entry.path() << std::endl;
 			pagepath[numofpages].assign(entry.path());
-//			pagepath[numofpages].erase(0,1);
-//			pagepath[numofpages].resize( pagepath[numofpages].size()-1 );
 			numofpages++;
 		}
 	}
 
-	cout << "The number of pages are: " << numofpages << "\n";
+	//cout << "The number of pages are: " << numofpages << "\n";
 	
 //-------------	Iterate over all pages to scan and process them
 
@@ -96,56 +95,60 @@ int main(int argc, char** argv)
 
 	for( int x = 0; x < numofpages; x++)
 	{
-		cout << "pagepath" << x << ": " << pagepath[x] << "\n";
-
-		//pv.push_back(PageObj);
+//		cout << "pagepath" << x << ": " << pagepath[x] << "\n";
 
 		Webpage *PageObj = new Webpage;
 		PageObj->num = x;
 		PageObj->Filename = pagepath[x];
+		PageObj->Destination = pagepath[x];
 		pv.push_back(PageObj);
-	}
 
-	for( int x = 0; x < pv.size(); x++ )
+		size_t pos;
+		pos = pv[x]->Destination.rfind(".md");
+		if( pos != std::string::npos )
+		{
+			pv[x]->Destination.erase(pos, pv[x]->Destination.size()-pos);
+		}
+		pos = pv[x]->Destination.rfind(".txt");
+		if( pos != std::string::npos )
+		{
+			pv[x]->Destination.erase(pos, pv[x]->Destination.size()-pos);
+		}
+		pv[x]->Destination.append(".html");
+	}
+//	if( destinationfolder != foldername );
+//	{	
+//		for( int x = 0; x < pv.size(); x++ )
+//		{
+//			
+//		}
+//	}
+
+	if( 1 == 1 )
 	{
-		if( indexing == 1 )
+
+	//-------------	Flush old data
+		
+		fs::remove_all("gen");
+		fs::create_directory("gen");
+
+	//-------------	Iterate over files and create new data
+
+		for( int x = 0; x < pv.size(); x++ )
 		{
 
-	//------------- Scan the page with references so it can return the data into the object
+		//------------- Scan the page with references so it can return the data into the object
 
-			pv[x]->ScanPage(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags);
+			pv[x]->ScanPage(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags);	
 
-	//------------- Create files from scanned data
+		//------------- Create files from scanned data
 
-	//		pv[x]->BuildData(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags);
-
+			pv[x]->BuildData(pv[x]->Filename, pv[x]->Title, pv[x]->Category, pv[x]->SubCategory, pv[x]->Tags, pv[x]->Destination);
 		}
+	}
 
 //		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
 
 //		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
-	}
-
-
-//	x = numofpages;
-//	while( x != 0 )
-//	{
-//	
-//	//-------------	Create page object, assign variables and call functions
-//	
-//		Webpage Page[x];
-//		Page[x].Filename.assign(pagepath[x]);
-//		Page[x].Destination.assign(destinationfolder);
-//		Page[x].Destination.append(Page[x].Filename);
-//	
-//		cout << "DEBUG: filedest: " << Page[x].Destination << "\n";
-//	
-//		if(Page[x].ScanPage(Page[x].Filename, Page[x].Title, Page[x].Category, Page[x].SubCategory, Page[x].Tags) != 0) { interrupt = 1; }
-//		//if()
-//		cout << "DEBUG: title: " << Page[x].Title << "\n";
-//		//if((interrupt = 0) && ())
-//		
-//		--x;
-//	}
 	return 0;
 }
