@@ -1,18 +1,5 @@
 #!/bin/sh
-cat materials/ascii
-
-#remove old files
-rm gen/*
-#old files removed
-
-#starting to categorize html pages
-for file in txt/*.md
-do
-	./blu.kat "$file"
-	#generates links to all pages and writes them to .tag and .sub files in gen/
-done
-printf '\033[34m>categories & tags generated\033[39m\n'
-#everything is now categorised, html generation can start
+#cat materials/ascii
 
 #generate menu
 cp materials/menu gen/menu.temp
@@ -28,36 +15,10 @@ cat materials/closemenu >> gen/menu.temp
 printf '\033[34m>menu generated\033[39m\n'
 #menu generated
 
-#filter out rare tags
-#for file in gen/*.tag
-#do
-#	lines=$(wc -l $file | awk '{print $1}')
-#	if [ ! $lines -gt "2" ]
-#	then
-#		rm $file
-#	fi
-#done
-#rare tags filtered out
-
 #adding link sheets and catting html pages
 for file in txt/*.md
 do
 	./imp.sh "$file" &
-	##	newfile=$( echo "$file" | awk -F"/" '{printf $2}')
-	##	#./aux.sh $file &
-	##	./blu.imp "$file" > gen/"$newfile".temp
-	##	#generates temporary pages and puts them in gen/
-	##	
-	##	#post processing for markdown and moving files from gen/ to html/
-	##	filename=$( echo "$newfile" | awk -F"." '{printf $1}')
-	##	taglist=$(cat gen/"$newfile".temp | grep "!tag:" | awk -F":" '{printf $1}')
-	##	sed "s/TAGS/$taglist/g" materials/head > html/$filename.html
-	##	cat gen/menu.temp materials/bodyprefix >> html/$filename.html
-	##	./blu.bmd gen/"$newfile".temp >> html/$filename.html #this processes pages WITH md
-	##	#cat gen/"$newfile".temp >> html/$filename.html	#this ignores md
-	##	cat materials/bodysuffix materials/footer >> html/"$filename".html
-	##	#write html files to html directory
-	##	echo "$filename generated"
 done
 wait
 
