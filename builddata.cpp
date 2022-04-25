@@ -33,7 +33,7 @@ int Webpage::BuildData(string &Filename, string &Title, string &Category, string
 		currentfilename.append(SubCategory);
 		currentfilename.append(".sub");
 		o.open(currentfilename, std::ios_base::app);
-		o << "<a href=\"" << Destination << "\">" << Title << "</a>" << endl;
+		o << "<a href=\"" << Destination << "\">" << Title << "</a><br>" << endl;
 		o.close();
 	}
 	cout << "Tags are: " << Tags << "\n";
