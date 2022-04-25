@@ -2,7 +2,7 @@ CC=clang
 GXX=clang++
 CFLAGS=-I.
 
-all: blu.kat blu.imp blu.bmd blush
+all: blu.imp blu.bmd blush
 
 blu.kat: kat.o
 	$(CC) -o blu.kat kat.o
