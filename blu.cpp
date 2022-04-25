@@ -20,17 +20,16 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-
 	//runtime settings
 	string destinationfolder = "html/";
 	string foldername = "";
 	string flagF = "-f";
 	string flagS = "-s";
-//	string flagI = "-i";
-//	string flagN = "-n";
+	string flagI = "-i";
+//	string flagV = "-v"; //add verbose mode at some point
 	int foldermode = 0;
 	int singlemode = 0;
-//	int indexmode = 1; //index by default
+	int indexmode = 0; //index off by default
 
 	//initialize string array for pages to process
 	string pagepath[32767];
@@ -45,15 +44,20 @@ int main(int argc, char** argv)
 		{
 			foldermode = 1;
 			a++;
-			cout << "DEBUG: flagF: " << a << "/" << argc << argv[a] << "\n";
+//			cout << "DEBUG: flagF: " << a << "/" << argc << argv[a] << "\n";
 			foldername.assign(argv[a]);
 		}
 		else if (flagS.compare(argv[a]) == 0)
 		{
 			singlemode = 1;
 			a++;
-			cout << "DEBUG: flagS: " << a << "/" << argc << argv[a] << "\n";
+//			cout << "DEBUG: flagS: " << a << "/" << argc << argv[a] << "\n";
 			pagepath[1].assign(argv[a]);
+		}
+		else if (flagI.compare(argv[a]) == 0)
+		{
+			indexmode = 1;
+//			cout << "DEBUG: flagI: indexmode";
 		}
 		else
 		{
@@ -114,6 +118,11 @@ int main(int argc, char** argv)
 		{
 			pv[x]->Destination.erase(pos, pv[x]->Destination.size()-pos);
 		}
+		pos = pv[x]->Destination.find(foldername);
+		if( pos != std::string::npos )
+		{
+			pv[x]->Destination.erase(0, foldername.length()+pos);
+		}
 		pv[x]->Destination.append(".html");
 	}
 //	if( destinationfolder != foldername );
@@ -124,7 +133,7 @@ int main(int argc, char** argv)
 //		}
 //	}
 
-	if( 1 == 1 )
+	if( indexmode == 1 )
 	{
 
 	//-------------	Flush old data
@@ -147,6 +156,16 @@ int main(int argc, char** argv)
 		}
 	}
 
+	for( int x = 0; x < pv.size(); x++ )
+	{
+	
+	//-------------	Create webpages with data
+	
+
+		
+	}
+	//------------- Just calls the script
+	system("./blu.sh");
 //		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
 
 //		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
