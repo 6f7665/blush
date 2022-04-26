@@ -9,6 +9,7 @@
 #include "builddata.h"
 #include "webpageclass.h"
 
+//namespaces
 using namespace std; //kokplattan finns på riktigt!!!
 namespace fs = std::filesystem;
 
@@ -160,12 +161,12 @@ int main(int argc, char** argv)
 	{
 	
 	//-------------	Create webpages with data
+	//
+	//something something
 	
 
 		
 	}
-	//------------- Just calls the script
-	system("./blu.sh");
 //		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
 
 //		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
