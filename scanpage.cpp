@@ -37,8 +37,6 @@ int Webpage::ScanPage(string &Filename, string &Title, string &Category, string 
 
 			typeofdef.assign(line,exclaim+1,colon-1);
 			definition.assign(line,colon+1,(lastcolon - colon));
-		//debug	cout << line << "\n";
-		//debug	cout << typeofdef << "\n";
 
 			if(typeofdef == "cat")
 			{
