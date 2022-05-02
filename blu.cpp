@@ -3,10 +3,12 @@
 #include <filesystem>
 #include <fstream>
 #include <vector>
+#include <stdlib.h>
 
 //self coded functions and classes
 #include "scanpage.h"
 #include "builddata.h"
+//#include "callimp.h"
 #include "webpageclass.h"
 
 //namespaces
@@ -24,10 +26,11 @@ int main(int argc, char** argv)
 	//runtime settings
 	string destinationfolder = "html/";
 	string foldername = "";
+
 	string flagF = "-f";
 	string flagS = "-s";
 	string flagI = "-i";
-//	string flagV = "-v"; //add verbose mode at some point
+
 	int foldermode = 0;
 	int singlemode = 0;
 	int indexmode = 0; //index off by default
@@ -35,7 +38,7 @@ int main(int argc, char** argv)
 	//initialize string array for pages to process
 	string pagepath[32767];
 
-//-------------	Get arguments from commandline
+//-------------	Get arguments from impcommandline
 
 	int a;
 
@@ -45,20 +48,17 @@ int main(int argc, char** argv)
 		{
 			foldermode = 1;
 			a++;
-//			cout << "DEBUG: flagF: " << a << "/" << argc << argv[a] << "\n";
 			foldername.assign(argv[a]);
 		}
 		else if (flagS.compare(argv[a]) == 0)
 		{
 			singlemode = 1;
 			a++;
-//			cout << "DEBUG: flagS: " << a << "/" << argc << argv[a] << "\n";
 			pagepath[1].assign(argv[a]);
 		}
 		else if (flagI.compare(argv[a]) == 0)
 		{
 			indexmode = 1;
-//			cout << "DEBUG: flagI: indexmode";
 		}
 		else
 		{
@@ -71,7 +71,6 @@ int main(int argc, char** argv)
 		cout << "ERROR, can't run single and folder at the same time\n";
 		return 1;
 	}
-
 
 //-------------	Check amount of pages to process
 
@@ -91,8 +90,6 @@ int main(int argc, char** argv)
 			numofpages++;
 		}
 	}
-
-	//cout << "The number of pages are: " << numofpages << "\n";
 	
 //-------------	Iterate over all pages to scan and process them
 
@@ -100,8 +97,6 @@ int main(int argc, char** argv)
 
 	for( int x = 0; x < numofpages; x++)
 	{
-//		cout << "pagepath" << x << ": " << pagepath[x] << "\n";
-
 		Webpage *PageObj = new Webpage;
 		PageObj->num = x;
 		PageObj->Filename = pagepath[x];
@@ -126,13 +121,6 @@ int main(int argc, char** argv)
 		}
 		pv[x]->Destination.append(".html");
 	}
-//	if( destinationfolder != foldername );
-//	{	
-//		for( int x = 0; x < pv.size(); x++ )
-//		{
-//			
-//		}
-//	}
 
 	if( indexmode == 1 )
 	{
@@ -159,16 +147,31 @@ int main(int argc, char** argv)
 
 	for( int x = 0; x < pv.size(); x++ )
 	{
-	
-	//-------------	Create webpages with data
-	//
-	//something something
-	
-
-		
+		pv[x]->callimp(pv[x]->Filename, pv[x]->Destination); 
 	}
 //		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
 
 //		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
 	return 0;
+}
+
+void Webpage::callimp(string &Filename, string &Destination)
+{
+	string Tempfile = "gen/";
+	Tempfile.append(Filename, Filename.find("/")+1, Filename.rfind(".")-1);
+	Tempfile.append(".temp");
+
+	string impcommand = "./imp ";
+	impcommand.append(Filename);
+	impcommand.append(" ");
+	impcommand.append(Tempfile);
+	cout << impcommand << endl;
+	std::system((impcommand.c_str()));
+	
+	string mdcommand = "./blu.bmd ";
+	mdcommand.append(Tempfile);
+	mdcommand.append(" > ");
+	mdcommand.append(Destination);
+	cout << mdcommand << endl;
+	std::system((mdcommand.c_str()));
 }

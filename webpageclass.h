@@ -19,4 +19,5 @@ class Webpage
 	int ScanPage(string &Filename, string &Title, string &Category, string &SubCategory, string &Tags);
 //	int AddToMenu( char &Destination );
 //      void ConvertPage( char &Filename, char &Destination );
+	void callimp(string &Filename, string &Destination);
 };

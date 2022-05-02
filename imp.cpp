@@ -2,7 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
-#include <vector>
+//#include <vector>
 
 //namespaces
 using namespace std;
@@ -29,9 +29,12 @@ int main(int argc, char** argv)
 	string impfile;
 	string impline;
 
-	while(line.find("!start:") == std::string::npos)
+	while(line.find("!start:") == std::string::npos) //stuck in the loop til we find the start
 	{
-		getline(i, line);
+		if(!getline(i, line)) 
+		{
+			break; //wtf, no !start: in the file :oooo
+		}
 	}
 
 	//import menu here?
@@ -43,15 +46,16 @@ int main(int argc, char** argv)
 		if( pos == 0 )
 		{
 			impfile.assign("gen/");
+			impfile.append(line, line.find(":")+1, line.rfind(":")-1);
+
 			command.assign(line, 1, line.find(":")-1);
+
 			if (command == "impsub")
 			{
-				impfile.append(line, line.find(":")+1, line.rfind(":")-1);
 				impfile.append(".sub");
 			}
 			if (command == "impcat")
 			{
-				impfile.append(line, line.find(":")+1, line.rfind(":")-1);
 				impfile.append(".cat");
 			}
 
@@ -71,10 +75,10 @@ int main(int argc, char** argv)
 		}
 		else
 		{
+
 			o << line << endl;
 		}
 	}
-
 	//import closing html brackets here?
 
 //	cout << "Filename/Destination is: " << Filename << "/" << Destination << "\n";
