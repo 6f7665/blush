@@ -147,15 +147,13 @@ int main(int argc, char** argv)
 
 	for( int x = 0; x < pv.size(); x++ )
 	{
-		pv[x]->callimp(pv[x]->Filename, pv[x]->Destination); 
+		pv[x]->CallGenerate(pv[x]->Filename, pv[x]->Destination); 
 	}
-//		pv[x]->Convert(pv[x]->Filename, pv[x]->Destination);
 
-//		cout<<"N = "<<v[i]->n<<"   N*N = "<<v[i]->nsq<<endl;
 	return 0;
 }
 
-void Webpage::callimp(string &Filename, string &Destination)
+void Webpage::CallGenerate(string &Filename, string &Destination)
 {
 	string Tempfile = "gen/";
 	Tempfile.append(Filename, Filename.find("/")+1, Filename.rfind(".")-1);
