@@ -155,6 +155,8 @@ int main(int argc, char** argv)
 
 void Webpage::CallGenerate(string &Filename, string &Destination)
 {
+	string destinationfolder = "html/";
+
 	string Tempfile = "gen/";
 	Tempfile.append(Filename, Filename.find("/")+1, Filename.rfind(".")-1);
 	Tempfile.append(".temp");
@@ -169,6 +171,7 @@ void Webpage::CallGenerate(string &Filename, string &Destination)
 	string mdcommand = "./blu.bmd ";
 	mdcommand.append(Tempfile);
 	mdcommand.append(" > ");
+	mdcommand.append(destinationfolder);
 	mdcommand.append(Destination);
 	cout << mdcommand << endl;
 	std::system((mdcommand.c_str()));

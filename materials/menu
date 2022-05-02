@@ -2,3 +2,5 @@
 	<div id='header'>
 		<nav>
 			<ul class='ml'>
+				<li class='mi'><a href='index.html'>Index</a></li>
+				<li class='mi'><a href='syntax.html'>Syntax</a></li>

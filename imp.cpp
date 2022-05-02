@@ -36,8 +36,27 @@ int main(int argc, char** argv)
 			break; //wtf, no !start: in the file :oooo
 		}
 	}
+	
+	i2.open("materials/head");
+	while(getline(i2, line))
+	{
+		o << line;
+	}
+	i2.close();
 
-	//import menu here?
+	i2.open("materials/menu");
+	while(getline(i2, line))
+	{
+		o << line;
+	}
+	i2.close();
+	
+	i2.open("materials/closemenu");
+	while(getline(i2, line))
+	{
+		o << line;
+	}
+	i2.close();
 
 	while(getline(i, line))
 	{
@@ -79,8 +98,13 @@ int main(int argc, char** argv)
 			o << line << endl;
 		}
 	}
-	//import closing html brackets here?
 
-//	cout << "Filename/Destination is: " << Filename << "/" << Destination << "\n";
+	i2.open("materials/footer");
+	while(getline(i2, line))
+	{
+		o << line;
+	}
+	i2.close();
+
 	return 0;
 }
