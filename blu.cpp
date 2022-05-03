@@ -8,7 +8,6 @@
 //self coded functions and classes
 #include "scanpage.h"
 #include "builddata.h"
-//#include "callimp.h"
 #include "webpageclass.h"
 
 //namespaces
