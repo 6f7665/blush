@@ -106,5 +106,7 @@ int main(int argc, char** argv)
 	}
 	i2.close();
 
+	//import blog entries here
+
 	return 0;
 }
