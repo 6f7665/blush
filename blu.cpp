@@ -174,4 +174,6 @@ void Webpage::CallGenerate(string &Filename, string &Destination)
 	mdcommand.append(Destination);
 	cout << mdcommand << endl;
 	std::system((mdcommand.c_str()));
+
+	std::system("cp gen/*.html html/");
 }

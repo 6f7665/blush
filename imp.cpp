@@ -144,37 +144,58 @@ int main(int argc, char** argv)
 			numofpages++;
 		}
 		sort(blogpage, blogpage+numofpages);
-		blogpages = numofpages / entriesperpage;
+		blogpages = (numofpages / entriesperpage);
 		if(numofpages % entriesperpage != 0){blogpages++;}
 		cout << to_string(blogpages) << endl;
 
+		string filenametogetextentionfrom;
+		filenametogetextentionfrom.assign(argv[2]);
+		size_t extentionstart = filenametogetextentionfrom.find(".md.temp");
 		i.open(argv[2]);
 		string file2[32767];
+		int currententry = 0;
+		int currentpage = 1;
 		for( int y = 0; y < blogpages; y++)
 		{
-			file2[y].assign(argv[2]);
-			file2[y].append(to_string(y));
+			file2[currentpage].assign(argv[2], 0, extentionstart);
+			string file2destination = file2[currentpage];
+			file2[currentpage].append(to_string(currentpage));
+			if(currentpage != 1)
+			{
+				file2destination.append(to_string(currentpage));
+			}
+			file2destination.append(".html");
 
-			cout << file2[y] << endl;
-			o.open(file2[y]);
+			cout << file2[currentpage] << endl;
+			o.open(file2[currentpage]);
 			while(getline(i, line))
 			{
 				if(line.find("!impblog") != string::npos)
 				{
-					o << blogpage[y] << endl;
-					cout << blogpage[y] << endl;
+					while( currententry <= (entriesperpage * (currentpage)) )
+					{
+						o << blogpage[currententry] << endl;
+						cout << blogpage[currententry] << endl;
+						currententry++;
+					}
 				}
 				else
 				{
 				      	o << line << endl;
 				}
 			}
+			string mdcommand = "./blu.bmd ";
+			mdcommand.append(file2[currentpage]);
+			mdcommand.append(" > ");
+			mdcommand.append(file2destination);
+			std::system((mdcommand.c_str()));
+			currentpage++;
+
 			o.close();
 			i.clear();
 			i.seekg(0);
 		}
 		i.close();
 	}
-
 	return 0;
 }
