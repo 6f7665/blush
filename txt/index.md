@@ -9,7 +9,7 @@ Blush supports categories, that will be will be added to menu and subcategories/
   
 BLOG entries:
 
-!impblog:blog
+!impblog:blog:
 
 ## Documentation
 
