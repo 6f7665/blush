@@ -5,13 +5,13 @@ CFLAGS=-I.
 all: cshg-imp cshg-md cshg
 
 main.o: main.cpp
-	$(GXX) -std=c++17 -g -c blu.cpp
+	$(GXX) -std=c++17 -g -c main.cpp
 builddata.o: builddata.cpp
 	$(GXX) -std=c++17 -g -c builddata.cpp
 scanpage.o: scanpage.cpp
 	$(GXX) -std=c++17 -g -c scanpage.cpp
 cshg: main.o scanpage.o builddata.o
-	$(GXX) -std=c++17 -g blu.o scanpage.o builddata.o -o blush
+	$(GXX) -std=c++17 -g main.o scanpage.o builddata.o -o cshg
 
 ##//import program
 
@@ -23,4 +23,4 @@ cshg-imp: imp.o
 ##//markdown processor
 
 cshg-md: bmd.o
-	$(CC) -o blu.bmd bmd.o
+	$(CC) -o cshg-md bmd.o
