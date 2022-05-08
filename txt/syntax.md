@@ -24,7 +24,7 @@ These commands are used inside the document as a way to conveniently link pages 
   
 ` !impsub:[arg] `, links every page that belongs to the sub-category [arg] in a list  
 ` !imptag:[arg] `, links every page that belongs to the tag [arg] in a list  
-~~ ` !impblog:[arg]:[n] `, creates a blog with the files in folder [arg] with [n] entries per page~~  
+` !impblog:[arg]: `, creates a blog with the files in folder [arg]  
 ~~ ` !impimg:[arg]:[title] `, creates img element with the image [arg] and title [title]~~  
 
 ## Markdown
