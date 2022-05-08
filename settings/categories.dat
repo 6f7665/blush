@@ -1,9 +1,0 @@
-#category	#subcategories:Name
-index		:blog:Index
-showcase	:imports:Showcase
-syntax		:images,categories:Syntax
-licence		:licence:Licence
-#category corresponds to a .html page with the same name
-#name is the name appearing on the link
-#index will link to index.html and but the link will appear as "hem" = "home"
-#subcategories will be used later for advanced menu generation, as for now they are separated by ","
