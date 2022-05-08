@@ -1,5 +1,5 @@
-# Blush
-BSD/Linux "U" Static HTML
+# CSHG
+Categorized Static HTML Generator
 
 Simple static html generator with support for tags and categories, compatible with BSD & GNU/Linux
 
