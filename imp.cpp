@@ -172,10 +172,32 @@ int main(int argc, char** argv)
 			{
 				if(line.find("!impblog") != string::npos)
 				{
+				//------------- this imports blogpages until the limit of entries per page
 					while( currententry <= (entriesperpage * (currentpage)) )
 					{
-						o << blogpage[currententry] << endl;
-						cout << blogpage[currententry] << endl;
+						ifstream i3;
+						i3.open(materials/blogprefix);
+						while(getline(i3, line))
+						{
+							o << line << endl;
+						}
+						i3.close();
+
+						i3.open(blogpage[currententry]);
+						while(getline(i3, line))
+						{
+							o << line << endl;
+						}
+						i3.close();
+
+						i3.open(materials/suffix);
+						while(getline(i3, line))
+						{
+							o << line << endl;
+						}
+						i3.close();
+
+						cout << blogpage[currententry] << " imped" << endl;
 						currententry++;
 					}
 				}
