@@ -176,7 +176,7 @@ int main(int argc, char** argv)
 					while( currententry <= (entriesperpage * (currentpage)) )
 					{
 						ifstream i3;
-						i3.open(materials/blogprefix);
+						i3.open("materials/blogprefix");
 						while(getline(i3, line))
 						{
 							o << line << endl;
@@ -190,7 +190,7 @@ int main(int argc, char** argv)
 						}
 						i3.close();
 
-						i3.open(materials/suffix);
+						i3.open("materials/suffix");
 						while(getline(i3, line))
 						{
 							o << line << endl;
