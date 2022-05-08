@@ -10,7 +10,7 @@ The first part of the file is reserved blush specific generation settings.
 These settings are for tagging and categorization (indexing).
 Once the start command is given the indexing will stop.
 
-## Blush indexing syntax
+## Indexing Syntax
 These settings are used in the beginning of the file to categorize the file so that it can be linked to from other files/web-pages.  
   
 ` !cat:[arg]: `, adds page to the category [arg]  
@@ -19,7 +19,7 @@ These settings are used in the beginning of the file to categorize the file so t
 ` !tag:[arg]: `, adds page to the tag [arg]  
 ` !start: `, ends the indexing  
 
-## Blush document syntax
+## Document Syntax
 These commands are used inside the document as a way to conveniently link pages together, import images and make blog pages.  
   
 ` !impsub:[arg] `, links every page that belongs to the sub-category [arg] in a list  
