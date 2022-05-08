@@ -160,14 +160,14 @@ void Webpage::CallGenerate(string &Filename, string &Destination)
 	Tempfile.append(Filename, Filename.find("/")+1, Filename.rfind(".")-1);
 	Tempfile.append(".temp");
 
-	string impcommand = "./imp ";
+	string impcommand = "./cshg-imp ";
 	impcommand.append(Filename);
 	impcommand.append(" ");
 	impcommand.append(Tempfile);
 	cout << impcommand << endl;
 	std::system((impcommand.c_str()));
 	
-	string mdcommand = "./blu.bmd ";
+	string mdcommand = "./cshg-md ";
 	mdcommand.append(Tempfile);
 	mdcommand.append(" > ");
 	mdcommand.append(destinationfolder);

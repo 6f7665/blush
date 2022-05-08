@@ -5,7 +5,7 @@
 !start:
 <p>
 # Syntax
-Blush has it's own syntax, every command starts with ! at the start of the line and ends with : followed by the argument.
+CSHG has it's own syntax, every command starts with ! at the start of the line and ends with : followed by the argument.
 The first part of the file is reserved blush specific generation settings.
 These settings are for tagging and categorization (indexing).
 Once the start command is given the indexing will stop.

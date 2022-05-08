@@ -206,7 +206,7 @@ int main(int argc, char** argv)
 				      	o << line << endl;
 				}
 			}
-			string mdcommand = "./blu.bmd ";
+			string mdcommand = "./cshg-md ";
 			mdcommand.append(file2[currentpage]);
 			mdcommand.append(" > ");
 			mdcommand.append(file2destination);
