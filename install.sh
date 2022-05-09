@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$(id -nu)" = "root" ]; then
+	echo "please don't run this script as root"
+	exit
+fi
+
 #compile everything
 make
 
@@ -14,9 +19,10 @@ while true; do
 	fi
 done
 
-#everything got compiled, check if user is root and ask if user wants alias for cshg if not
-if [ "$(id -nu)" != "root" ]; then
-	echo "you arent root on this system, do you want to generate aliases[y/n]"
+#everything got compiled, check if user has sudo right, if not ask if user wants aliases
+check=$(sudo -l -U "$(id -nu)" | grep -c "User $(id -nu) may run the following commands on")
+if [ ! "$check" ]; then
+	echo "it appears you dont have sudo rights this system, do you want to generate aliases[y/n]"
 	while true; do
 		read -r yn
 		if [ "$yn" = n ]; then
@@ -39,9 +45,9 @@ if [ "$(id -nu)" != "root" ]; then
 #if the user was root, install programs to /usr/bin
 else
 	echo "installing to /usr/bin/"
-	cp cshg /usr/bin/cshg
-	cp cshg-imp /usr/bin/cshg-imp
-	cp cshg-md /usr/bin/cshg-md
+	sudo cp cshg /usr/bin/cshg
+	sudo cp cshg-imp /usr/bin/cshg-imp
+	sudo cp cshg-md /usr/bin/cshg-md
 fi
 
 #check if user wants to process example files and open in browser
