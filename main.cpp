@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 		path.assign(foldername);
 		for (const auto & entry : fs::directory_iterator(path))
 		{
-			std::cout << entry.path() << std::endl;
+			//std::cout << entry.path() << std::endl;
 			pagepath[numofpages].assign(entry.path());
 			numofpages++;
 		}
@@ -160,19 +160,19 @@ void Webpage::CallGenerate(string &Filename, string &Destination)
 	Tempfile.append(Filename, Filename.find("/")+1, Filename.rfind(".")-1);
 	Tempfile.append(".temp");
 
-	string impcommand = "./cshg-imp ";
+	string impcommand = "~/./cshg/cshg-imp ";
 	impcommand.append(Filename);
 	impcommand.append(" ");
 	impcommand.append(Tempfile);
-	cout << impcommand << endl;
+	//cout << impcommand << endl;
 	std::system((impcommand.c_str()));
 	
-	string mdcommand = "./cshg-md ";
+	string mdcommand = "~/./cshg/cshg-md ";
 	mdcommand.append(Tempfile);
 	mdcommand.append(" > ");
 	mdcommand.append(destinationfolder);
 	mdcommand.append(Destination);
-	cout << mdcommand << endl;
+	//cout << mdcommand << endl;
 	std::system((mdcommand.c_str()));
 
 	std::system("cp gen/*.html html/");
