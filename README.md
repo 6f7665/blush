@@ -1,3 +1,5 @@
+![CSHG logo](https://raw.githubusercontent.com/6f7665/cshg/main/html/images/logo.png)
+
 # CSHG
 Categorized Static HTML Generator
 
