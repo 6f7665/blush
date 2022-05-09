@@ -77,10 +77,10 @@ code {
 	background-color: var(--aux2-color);
 	border: 1px;
 	padding: 1%;
-	padding-top: 0px;
-	margin-top: 5px;
+	padding-top: 0.5%;
+	margin-top: 3%;
 	border-color: var(--border-color);
-	border-style: dashed dashed solid none;
+	border-style: none dashed dashed none;
 }
 
 
