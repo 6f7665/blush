@@ -7,7 +7,6 @@ make
 while true; do
 
 	if test -f cshg && test -f cshg-imp && test -f cshg-md; then
-	#if [ ! -f "cshg" ] || [ ! -f "cshg-imp" ] || [ ! -f "cshg-md" ]; then
 		break;
 	else
 		echo "all targets hasn't been compiled, exiting script"
