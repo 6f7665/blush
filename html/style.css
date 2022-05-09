@@ -43,7 +43,6 @@ body {
 #sidecontainer {
 	/*display: none;*/
 	position: fixed;
-        background-image: url(images/lystan.png);
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: 0px bottom;
@@ -67,7 +66,8 @@ p {
 code {
 	background-color: var(--aux3-color);
 	border: 1px;
-	padding-left: 7px;
+	padding-left: 2px;
+	padding-right: 2px;
 	border-color: var(--border-color);
 	border-style: dashed;
 }
