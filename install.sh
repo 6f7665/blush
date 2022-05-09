@@ -18,27 +18,47 @@ done
 if [ "$(id -nu)" != "root" ]; then
 	echo "you arent root on this system, do you want to generate aliases[y/n]"
 	while true; do
-		read yn
+		read -r yn
 		if [ "$yn" = n ]; then
-			exit
+			break;
 		fi
 		if [ "$yn" = y ]; then
+			dir=$(pwd)
+			echo "please copy and paste this into you shell config:"
+			echo ""
+			echo "alias cshg=\"/./${dir}/cshg\""
+			echo "alias cshg-imp=\"/./${dir}/cshg-imp\""
+			echo "alias cshg-md=\"/./${dir}/cshg-md\""
+			echo ""
 			break;
 		fi
 		echo "please answer y/n"
 	done
 
-	dir=$(pwd)
-	echo "please copy and paste this into you shell config:"
-	echo ""
-	echo "alias cshg=\"/./${dir}/cshg\""
-	echo "alias cshg-imp=\"/./${dir}/cshg-imp\""
-	echo "alias cshg-md=\"/./${dir}/cshg-md\""
-	echo ""
 
 #if the user was root, install programs to /usr/bin
 else
+	echo "installing to /usr/bin/"
 	cp cshg /usr/bin/cshg
 	cp cshg-imp /usr/bin/cshg-imp
 	cp cshg-md /usr/bin/cshg-md
 fi
+
+#check if user wants to process example files and open in browser
+echo "do you want to generate documentation files and open them in browser[y/n]"
+while true; do
+	read -r yn
+	if [ "$yn" = n ]; then
+		exit
+	fi
+	if [ "$yn" = y ]; then
+		break;
+	fi
+	echo "please answer y/n"
+done
+
+./cshg -i -f txt/
+
+echo "please enter webbrowser command (eg. firefox)"
+read -r browser
+${browser} html/index.html && exit
