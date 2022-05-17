@@ -245,7 +245,7 @@ int main( int argc, char *argv[] )
 		{
 			fpos_t position;
 			fgetpos(fp, &position); //save the position
-			new_ch = fgetc(fp);
+			ch = fgetc(fp);
 			if( ch == '[' )
 			{
 				ch = fgetc(fp);
@@ -286,10 +286,10 @@ int main( int argc, char *argv[] )
 					if( ch == ' ' )
 					{
 						char temp_ch = fgetc(fp);
-						ungetc(fp);
+						ungetc(temp_ch, fp);
 						if( temp_ch != '\"' || temp_ch != ')' )
 						{
-							printf("%20"); //space in link is %20, this puts that
+							printf("\%20"); //space in link is %20, this puts that
 						}
 						else if( temp_ch == '\"' )
 						{
