@@ -240,6 +240,78 @@ int main( int argc, char *argv[] )
 
 		}
 
+		//markdown images
+		if( ch == '!' )
+		{
+			fpos_t position;
+			fgetpos(fp, &position); //save the position
+			new_ch = fgetc(fp);
+			if( ch == '[' )
+			{
+				ch = fgetc(fp);
+
+				char alt_text[512];
+				int alt_text_pos = 0;
+
+				while( ch != ']' && ch != EOF ) //load alt text for image into c string
+				{
+					if (alt_text_pos < 512)
+					{
+						alt_text[alt_text_pos] = ch;
+					}
+					alt_text_pos++;
+					ch = fgetc(fp);
+				}
+				ch = fgetc(fp);
+
+				while( ch != '(' && ch != EOF ) //look for link paranthesis
+				{
+					ch = fgetc(fp);
+				}
+
+				char title_string[512];
+				int title_string_pos = 0;
+
+				char link_string[1024];
+				int link_string_pos = 0;
+
+				while( ch != ')' && ch != EOF ) //load link into string
+				{
+					if( link_string_pos < 1024 && ch != ' ' && ch != EOF )
+					{
+						link_string[link_string_pos] = ch;
+					}
+					link_string_pos++;
+					ch = fgetc(fp);
+					if( ch == ' ' )
+					{
+						char temp_ch = fgetc(fp);
+						ungetc(fp);
+						if( temp_ch != '\"' || temp_ch != ')' )
+						{
+							printf("%20"); //space in link is %20, this puts that
+						}
+						else if( temp_ch == '\"' )
+						{
+							ch = fgetc(fp);
+							ch = fgetc(fp); //get 2 chars since we ungot 1
+							while( ch != '\"' && title_string_pos < 1024 && ch != EOF )
+							{
+								title_string[title_string_pos] = ch;
+							}
+							title_string_pos++;
+							ch = fgetc(fp);
+						}
+					}
+				}
+				//fix some stuff that prints out the correct img tag here
+			}
+			else
+			{
+				fsetpos(fp, &position); //go back to the intial!
+			}
+		}				
+
 		//headers using "#"
 		while( ch == '#' ) //count up hashtags to get the [x] for <h[x]>
 		{
