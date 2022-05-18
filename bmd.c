@@ -268,6 +268,7 @@ int main( int argc, char *argv[] )
 				{
 					ch = fgetc(fp);
 				}
+				ch = fgetc(fp); //skip the '('
 
 				char title_string[512];
 				int title_string_pos = 0;
@@ -277,38 +278,100 @@ int main( int argc, char *argv[] )
 
 				while( ch != ')' && ch != EOF ) //load link into string
 				{
-					if( link_string_pos < 1024 && ch != ' ' && ch != EOF )
+					if( link_string_pos < 1024 && ch != '\"' && ch != EOF )
 					{
-						link_string[link_string_pos] = ch;
-					}
-					link_string_pos++;
-					ch = fgetc(fp);
-					if( ch == ' ' )
-					{
-						char temp_ch = fgetc(fp);
-						ungetc(temp_ch, fp);
-						if( temp_ch != '\"' || temp_ch != ')' )
+						if( ch == ' ' )
 						{
-							printf("\%20"); //space in link is %20, this puts that
+							//ignore spaces for now, implement %20 later
 						}
-						else if( temp_ch == '\"' )
+						else
 						{
-							ch = fgetc(fp);
-							ch = fgetc(fp); //get 2 chars since we ungot 1
-							while( ch != '\"' && title_string_pos < 1024 && ch != EOF )
+							link_string[link_string_pos] = ch;
+							link_string_pos++;
+						}
+					}
+					if( ch == '\"' )
+					{
+						ch = fgetc(fp);
+
+						while( title_string_pos < 1024 && ch != '\"' && ch != EOF )
+						{
+							if( ch == '\\' )
 							{
-								title_string[title_string_pos] = ch;
+								ch = fgetc(fp);
 							}
+							title_string[title_string_pos] = ch;
 							title_string_pos++;
 							ch = fgetc(fp);
 						}
+						while( ch != ')' && ch != EOF )
+						{
+							ch = fgetc(fp);
+						}
+						ch = fgetc(fp);
+						break;
 					}
+					ch = fgetc(fp);
 				}
-				//fix some stuff that prints out the correct img tag here
+				char cssclassname[128];
+				int cssclassname_pos = 0;
+				if( ch == ':' )
+				{
+					ch = fgetc(fp);
+					while( ch != ':' && ch != EOF )
+					{
+						cssclassname[cssclassname_pos] = ch;
+						ch = fgetc(fp);
+						cssclassname_pos++;
+					}
+					ch = fgetc(fp);
+				}
+				//print out image tag
+				if( link_string_pos != 0)
+				{
+					printf("<img src=\"");
+					for(int lpos = 0; lpos < link_string_pos; lpos++)
+					{
+						printf("%c", link_string[lpos]);
+					}
+					printf("\"");
+					if( title_string_pos != 0)
+					{
+						printf(" title=\"");
+						for(int tpos = 0; tpos < title_string_pos; tpos++)
+						{
+							printf("%c", title_string[tpos]);
+						}
+						printf("\"");
+					}
+					if( alt_text_pos != 0)
+					{
+						printf(" alt=\"");
+						for(int apos = 0; apos < alt_text_pos; apos++)
+						{
+							printf("%c", alt_text[apos]);
+						}
+						printf("\"");
+					}
+					if( cssclassname_pos != 0)
+					{
+						printf(" class=\"");
+						for(int cpos = 0; cpos < cssclassname_pos; cpos++)
+						{
+							printf("%c", cssclassname[cpos]);
+						}
+						printf("\"");
+					}
+					printf(">");
+				}
+				else
+				{
+					fsetpos(fp, &position); //no link detected?!
+				}
 			}
 			else
 			{
-				fsetpos(fp, &position); //go back to the intial!
+				fsetpos(fp, &position); //go back to the intial '!', missing '('
 			}
 		}				
 
