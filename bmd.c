@@ -249,10 +249,8 @@ int main( int argc, char *argv[] )
 			if( ch == '[' )
 			{
 				ch = fgetc(fp);
-
 				char alt_text[512];
 				int alt_text_pos = 0;
-
 				while( ch != ']' && ch != EOF ) //load alt text for image into c string
 				{
 					if (alt_text_pos < 512)
@@ -263,19 +261,15 @@ int main( int argc, char *argv[] )
 					ch = fgetc(fp);
 				}
 				ch = fgetc(fp);
-
 				while( ch != '(' && ch != EOF ) //look for link paranthesis
 				{
 					ch = fgetc(fp);
 				}
 				ch = fgetc(fp); //skip the '('
-
 				char title_string[512];
 				int title_string_pos = 0;
-
 				char link_string[1024];
 				int link_string_pos = 0;
-
 				while( ch != ')' && ch != EOF ) //load link into string
 				{
 					if( link_string_pos < 1024 && ch != '\"' && ch != EOF )
@@ -296,10 +290,10 @@ int main( int argc, char *argv[] )
 
 						while( title_string_pos < 1024 && ch != '\"' && ch != EOF )
 						{
-							if( ch == '\\' )
-							{
-								ch = fgetc(fp);
-							}
+						//	if( ch == '\\' )
+						//	{
+						//		ch = fgetc(fp);
+						//	}
 							title_string[title_string_pos] = ch;
 							title_string_pos++;
 							ch = fgetc(fp);
@@ -308,11 +302,11 @@ int main( int argc, char *argv[] )
 						{
 							ch = fgetc(fp);
 						}
-						ch = fgetc(fp);
 						break;
 					}
 					ch = fgetc(fp);
 				}
+				ch = fgetc(fp);
 				char cssclassname[128];
 				int cssclassname_pos = 0;
 				if( ch == ':' )
