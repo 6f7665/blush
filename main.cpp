@@ -71,6 +71,20 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+//------------- Check configuration file
+
+	ifstream Config;
+	string ConfigLine;
+	Config.open("~/.config/cshg/config");
+	cout << "open config file" << endl;
+	while(getline(Config, ConfigLine))
+	{
+		cout << ConfigLine << endl;
+	}
+	Config.close();
+	cout << "close config file" << endl;
+
+
 //-------------	Check amount of pages to process
 
 	int numofpages = 0;

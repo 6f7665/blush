@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 			mdcommand.append(file2[currentpage]);
 			mdcommand.append(" > ");
 			mdcommand.append(file2destination);
-			//cout << mdcommand << endl;
+			cout << mdcommand << endl;
 			std::system((mdcommand.c_str()));
 
 		//-------------	count page up and reset the input so getline goes to the first line in input
