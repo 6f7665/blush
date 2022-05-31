@@ -6,12 +6,14 @@ all: cshg-imp cshg-md cshg
 
 main.o: main.cpp
 	$(GXX) -std=c++17 -g -c main.cpp
+commandtostring.o: commandtostring.cpp
+	$(GXX) -std=c++17 -g -c commandtostring.cpp
 builddata.o: builddata.cpp
 	$(GXX) -std=c++17 -g -c builddata.cpp
 scanpage.o: scanpage.cpp
 	$(GXX) -std=c++17 -g -c scanpage.cpp
-cshg: main.o scanpage.o builddata.o
-	$(GXX) -std=c++17 -g main.o scanpage.o builddata.o -o cshg
+cshg: main.o scanpage.o builddata.o commandtostring.o
+	$(GXX) -std=c++17 -g main.o commandtostring.o scanpage.o builddata.o -o cshg
 
 ##//import program
 

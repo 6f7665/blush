@@ -9,6 +9,7 @@
 #include "scanpage.h"
 #include "builddata.h"
 #include "webpageclass.h"
+#include "commandtostring.h"
 
 //namespaces
 using namespace std; //kokplattan finns på riktigt!!!
@@ -75,15 +76,29 @@ int main(int argc, char** argv)
 
 	ifstream Config;
 	string ConfigLine;
-	Config.open("~/.config/cshg/config");
-	cout << "open config file" << endl;
+	string HomeDir = "/home/";
+	string UID = "id -nu $uid";
+
+	if( CommandToString( UID, HomeDir ) != 0 )
+	{
+		cout << "No id found" << endl;
+	}
+	HomeDir.erase(HomeDir.find("\n"), HomeDir.length()-HomeDir.find("\n"));
+	//cout << HomeDir << endl;
+	HomeDir.append("/.config/cshg/config");
+	//cout << HomeDir << endl;
+	Config.open( HomeDir.c_str() );
+	//cout << "open config file" << endl;
+	if( !Config )
+	{
+		cout << "filen finns inte" << endl;
+	}
 	while(getline(Config, ConfigLine))
 	{
 		cout << ConfigLine << endl;
 	}
 	Config.close();
-	cout << "close config file" << endl;
-
+	//cout << "closed config file" << endl;
 
 //-------------	Check amount of pages to process
 
