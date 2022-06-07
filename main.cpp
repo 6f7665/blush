@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <vector>
+#include <regex>
 #include <stdlib.h>
 
 //self coded functions and classes
@@ -10,6 +11,7 @@
 #include "builddata.h"
 #include "webpageclass.h"
 #include "commandtostring.h"
+#include "importsequenceclass.h"
 
 //namespaces
 using namespace std; //kokplattan finns på riktigt!!!
@@ -27,7 +29,7 @@ int main(int argc, char** argv)
 	string destinationfolder = "html/";
 	string foldername = "";
 
-	string flagF = "-f";
+	string flagF = "-d";
 	string flagS = "-s";
 	string flagI = "-i";
 
@@ -38,7 +40,84 @@ int main(int argc, char** argv)
 	//initialize string array for pages to process
 	string pagepath[32767];
 
-//-------------	Get arguments from impcommandline
+//------------- Check configuration file
+
+	ifstream Config;
+	string ConfigLine;
+	string HomeDir = "/home/";
+	string UID = "id -nu $uid";
+	if( CommandToString( UID, HomeDir ) != 0 )
+	{
+		cout << "WARNING: No user id found" << endl;
+	}
+	HomeDir.erase(HomeDir.find("\n"), HomeDir.length()-HomeDir.find("\n"));
+	HomeDir.append("/.config/cshg/config");
+	Config.open( HomeDir.c_str() );
+	if( !Config )
+	{
+		cout << "NOTE: No Config file found at: " << HomeDir << endl;
+	}
+	while(getline(Config, ConfigLine))
+	{
+		size_t hashtagpos = ConfigLine.find("#");
+		if( hashtagpos != string::npos )
+		{
+			ConfigLine.erase(hashtagpos, ConfigLine.length()-hashtagpos);
+		}
+		if( ConfigLine.find(":") != string::npos )
+		{
+			cout << ConfigLine << "\n";
+		}
+		else if( ConfigLine.find(" {") != string::npos )
+		{
+		//------------- Get the type of import sequence
+			string importsequencetype;
+			importsequencetype.assign(ConfigLine, 0, ConfigLine.find(" {"));
+			cout << "importsequencetype: " << importsequencetype << "\n";
+		//-------------	Get the contents between the curly braces
+			string importfiles = "";
+			ConfigLine.erase( 0, ConfigLine.find("{") );
+			while(ConfigLine.find("}") == string::npos )
+			{
+				importfiles.append(ConfigLine);
+				if( !getline(Config, ConfigLine) ){ break; }
+			}
+			importfiles.append(ConfigLine);
+		//-------------- Clean up using regex to "file:command,file2:command2" format
+			regex cleanstringregex ("[{|}| |\t]");
+			importfiles = regex_replace(importfiles,cleanstringregex,"");
+			cout << importfiles << "\n";
+		//-------------- Create object for import sequence
+			if(importsequencetype == "imp")
+			{
+				ImportSequence imp;
+				imp.init(importfiles);
+			}
+			if(importsequencetype == "impcat")
+			{
+				ImportSequence impcat;
+				impcat.init(importfiles);
+			}
+			if(importsequencetype == "impsub")
+			{
+				ImportSequence impsub;
+				impsub.init(importfiles);
+			}
+			if(importsequencetype == "imptag")
+			{
+				ImportSequence imptag;
+				imptag.init(importfiles);
+			}
+			if(importsequencetype == "impblog")
+			{
+				ImportSequence impblog;
+				impblog.init(importfiles);
+			}
+		}
+	}
+	Config.close();
+
+//-------------	Get arguments from commandline
 
 	int a;
 
@@ -72,33 +151,6 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-//------------- Check configuration file
-
-	ifstream Config;
-	string ConfigLine;
-	string HomeDir = "/home/";
-	string UID = "id -nu $uid";
-
-	if( CommandToString( UID, HomeDir ) != 0 )
-	{
-		cout << "No id found" << endl;
-	}
-	HomeDir.erase(HomeDir.find("\n"), HomeDir.length()-HomeDir.find("\n"));
-	//cout << HomeDir << endl;
-	HomeDir.append("/.config/cshg/config");
-	//cout << HomeDir << endl;
-	Config.open( HomeDir.c_str() );
-	//cout << "open config file" << endl;
-	if( !Config )
-	{
-		cout << "filen finns inte" << endl;
-	}
-	while(getline(Config, ConfigLine))
-	{
-		cout << ConfigLine << endl;
-	}
-	Config.close();
-	//cout << "closed config file" << endl;
 
 //-------------	Check amount of pages to process
 
