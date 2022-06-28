@@ -66,6 +66,8 @@ int main(int argc, char** argv)
 		}
 		if( ConfigLine.find(":") != string::npos )
 		{
+			string ConfigLineDefinition;
+
 			cout << ConfigLine << "\n";
 		}
 		else if( ConfigLine.find(" {") != string::npos )
@@ -133,7 +135,7 @@ int main(int argc, char** argv)
 		{
 			singlemode = 1;
 			a++;
-			pagepath[1].assign(argv[a]);
+			pagepath[0].assign(argv[a]);
 		}
 		else if (flagI.compare(argv[a]) == 0)
 		{
@@ -225,8 +227,13 @@ int main(int argc, char** argv)
 		}
 	}
 
+
 	for( int x = 0; x < pv.size(); x++ )
 	{
+		if(singlemode == 1)
+		{
+			pv[x]->Destination.erase(0, pagepath[0].find("/")+1);
+		}
 		pv[x]->CallGenerate(pv[x]->Filename, pv[x]->Destination); 
 	}
 
