@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
 	if( argc != 3 )
 	{
-		cout << "ERROR: wrong number of arguments,\n Syntax: <filename> <argument>\n";
+		cout << "ERROR: wrong number of arguments,\n Syntax: <filename> <destination>\n";
 		return 1;
 	}
 
