@@ -26,7 +26,7 @@ int Webpage::BuildData(string &Filename, string &Title, string &Category, string
 		o << "<a href=\"" << Destination << "\">" << Title << "</a>" << endl;
 		o.close();
 	}
-	if(SubCategory.length() != 0)
+	if( (SubCategory.length() != 0) && (SubCategory.find(",") == std::string::npos) )
 	{
 		string currentfilename = "gen/";
 		cout << "\tSubCategory is: " << SubCategory << "\n";
@@ -36,8 +36,33 @@ int Webpage::BuildData(string &Filename, string &Title, string &Category, string
 		o << "<a href=\"" << Destination << "\">" << Title << "</a><br>" << endl;
 		o.close();
 	}
-	cout << "Tags are: " << Tags << "\n";
+	else if(SubCategory.length() != 0)
+	{
+		size_t commapos;
+		string currentstring = SubCategory;
+		while(currentstring.length() != 0 )
+		{
+			string currentfilename = "gen/";
+			commapos = currentstring.find(",");
+			if( commapos == std::string::npos )
+			{
+				commapos = currentstring.back();
+			}
 
+			currentfilename.append(currentstring, 0, commapos);
+			currentstring.erase(0, commapos+1);
+
+			currentfilename.append(".sub");
+
+			cout << currentfilename << "\n";
+
+			o.open(currentfilename, std::ios_base::app);
+			o << "<a href=\"" << Destination << "\">" << Title << "</a><br>" << endl;
+			o.close();
+		}
+	}
+	
+	cout << "Tags are: " << Tags << "\n";
 	if(Tags.length() != 0)
 	{
 		size_t commapos;
@@ -59,7 +84,7 @@ int Webpage::BuildData(string &Filename, string &Title, string &Category, string
 			cout << currentfilename << "\n";
 
 			o.open(currentfilename, std::ios_base::app);
-			o << "<a href=\"" << Destination << "\">" << Title << "</a>" << endl;
+			o << "<a href=\"" << Destination << "\">" << Title << "</a><br>" << endl;
 			o.close();
 		}
 	}
