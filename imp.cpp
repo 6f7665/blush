@@ -65,13 +65,14 @@ int main(int argc, char** argv)
 	{
 		size_t pos;
 		pos = line.find("!");
-		if( pos == 0 )
+		if( pos != std::string::npos )
 		{
-			command.assign(line, 1, line.find(":")-1);
+			command.assign(line, pos+1, line.find(":")-1);
 			if (command == "impblog")
 			{
 				o << line << endl;
 				blogfolder[0].assign(line, line.find(":")+1, line.rfind(":")-line.find(":")-1);
+				//cout << "folder" << blogfolder[0];
 				blogstatus++;
 			}
 			else
@@ -143,98 +144,106 @@ int main(int argc, char** argv)
 			blogpage[numofentries].assign(entry.path());
 			numofentries++;
 		}
-	//-------------	Sort blog entries and reverse order, highest number/newest first
-		sort(blogpage, blogpage+numofentries);
-		reverse(blogpage, blogpage+numofentries);
 
-	//------------- Calculate number of pages needed to display all entries from the blogfolder
-		blogpages = (numofentries / entriesperpage); //get the number of pages with full amount of entries
-		if(numofentries % entriesperpage != 0){blogpages++;} //uses modulo to get the number of entries for the last page
-
-	//-------------	Find out where in the filename .md.temp starts
-		string filenametogetextentionfrom;
-		filenametogetextentionfrom.assign(argv[2]);
-		size_t extentionstart = filenametogetextentionfrom.find(".md.temp");
-
-	//------------- Open the file we previously wrote to as an inpput stream
-		i.open(argv[2]);
-
-	//------------- Setup variables for importing the blog entries to the pages
-		string file2[32767];
-		int currententry = 0;
-		int currentpage = 1;
-
-	//-------------	For every blogpage we import entries and write to a new file
-		for( int y = 0; y < blogpages; y++)
+		if(numofentries == 0)
 		{
-
-		//-------------	Generate new filename, index.md.temp becomes index.html, index2.html, index3.html and so on.
-			file2[currentpage].assign(argv[2], 0, extentionstart);
-			string file2destination = file2[currentpage];
-			file2[currentpage].append(to_string(currentpage));
-			if(currentpage != 1)
+			cout << "WARNING: blog folder " << dirpath << " is empty\n";
+		}
+		else
+		{
+		//-------------	Sort blog entries and reverse order, highest number/newest first
+			sort(blogpage, blogpage+numofentries);
+			reverse(blogpage, blogpage+numofentries);
+	
+		//------------- Calculate number of pages needed to display all entries from the blogfolder
+			blogpages = (numofentries / entriesperpage); //get the number of pages with full amount of entries
+			if(numofentries % entriesperpage != 0){blogpages++;} //uses modulo to get the number of entries for the last page
+	
+		//-------------	Find out where in the filename .md.temp starts
+			string filenametogetextentionfrom;
+			filenametogetextentionfrom.assign(argv[2]);
+			size_t extentionstart = filenametogetextentionfrom.find(".md.temp");
+	
+		//------------- Open the file we previously wrote to as an inpput stream
+			i.open(argv[2]);
+	
+		//------------- Setup variables for importing the blog entries to the pages
+			string file2[32767];
+			int currententry = 0;
+			int currentpage = 1;
+	
+		//-------------	For every blogpage we import entries and write to a new file
+			for( int y = 0; y < blogpages; y++)
 			{
-				file2destination.append(to_string(currentpage));
-			}
-			file2destination.append(".html");
-
-		//-------------	Open the output file and import entries.
-			o.open(file2[currentpage]);
-			while(getline(i, line))
-			{
-				if(line.find("!impblog") != string::npos)
+	
+			//-------------	Generate new filename, index.md.temp becomes index.html, index2.html, index3.html and so on.
+				file2[currentpage].assign(argv[2], 0, extentionstart);
+				string file2destination = file2[currentpage];
+				file2[currentpage].append(to_string(currentpage));
+				if(currentpage != 1)
 				{
-				//------------- this loop imports entries until the limit of entries per page or the entries run out
-					while( currententry <= (entriesperpage * (currentpage)) && currententry < numofentries )
+					file2destination.append(to_string(currentpage));
+				}
+				file2destination.append(".html");
+	
+			//-------------	Open the output file and import entries.
+				o.open(file2[currentpage]);
+				while(getline(i, line))
+				{
+					if(line.find("!impblog") != std::string::npos)
 					{
-						ifstream i3;
-						i3.open("materials/blogprefix");
-						while(getline(i3, line))
+					//------------- this loop imports entries until the limit of entries per page or the entries run out
+						while( currententry <= (entriesperpage * (currentpage)) && currententry < numofentries )
+						{
+							ifstream i3;
+							i3.open("materials/blogprefix");
+							while(getline(i3, line))
+							{
+								o << line << endl;
+							}
+							i3.close();
+	
+							i3.open(blogpage[currententry]);
+							while(getline(i3, line))
+							{
+								o << line << endl;
+							}
+							i3.close();
+	
+							i3.open("materials/blogsuffix");
+							while(getline(i3, line))
+							{
+								o << line << endl;
+							}
+							i3.close();
+							currententry++;
+						}
+					//-------------	after the import while loop, read rest of input and write to output
+						while(getline(i, line))
 						{
 							o << line << endl;
 						}
-						i3.close();
-
-						i3.open(blogpage[currententry]);
-						while(getline(i3, line))
-						{
-							o << line << endl;
-						}
-						i3.close();
-
-						i3.open("materials/blogsuffix");
-						while(getline(i3, line))
-						{
-							o << line << endl;
-						}
-						i3.close();
-						currententry++;
 					}
-				//-------------	after the import while loop, read rest of input and write to output
-					while(getline(i, line))
+					else
 					{
-						o << line << endl;
+					      	o << line << endl;
 					}
 				}
-				else
-				{
-				      	o << line << endl;
-				}
+				o.close();
+	
+			//-------------	Run the markdown processor to generate html
+				string mdcommand = "~/./cshg/cshg-md ";
+				mdcommand.append(file2[currentpage]);
+				mdcommand.append(" > ");
+				mdcommand.append(file2destination);
+				cout << mdcommand << endl;
+				std::system((mdcommand.c_str()));
+	
+			//-------------	count page up and reset the input so getline goes to the first line in input
+				currentpage++;
+				i.clear();
+				i.seekg(0);
 			}
-			o.close();
-
-		//-------------	Run the markdown processor to generate html
-			string mdcommand = "~/./cshg/cshg-md ";
-			mdcommand.append(file2[currentpage]);
-			mdcommand.append(" > ");
-			mdcommand.append(file2destination);
-			cout << mdcommand << endl;
-			std::system((mdcommand.c_str()));
-
-		//-------------	count page up and reset the input so getline goes to the first line in input
-			currentpage++;
-			i.clear();
-			i.seekg(0);
 		}
 		i.close();
 	}
